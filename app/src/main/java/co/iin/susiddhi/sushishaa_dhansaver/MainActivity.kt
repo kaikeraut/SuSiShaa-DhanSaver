@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-        return true
+        return false
     }
 
 }

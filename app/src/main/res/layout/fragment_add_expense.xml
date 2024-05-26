@@ -68,12 +68,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <CheckBox
                 android:id="@+id/checkBoxEssentials"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:text="Essentials" />
 
@@ -81,6 +83,7 @@
                 android:id="@+id/checkBoxNonEssentials"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:text="Non-Essentials" />
         </LinearLayout>

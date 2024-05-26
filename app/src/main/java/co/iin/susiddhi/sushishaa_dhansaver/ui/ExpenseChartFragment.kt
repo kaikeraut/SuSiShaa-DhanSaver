@@ -123,6 +123,12 @@ class ExpenseChartFragment : Fragment() {
         buttonExpenseDate.setOnClickListener{
             val currentDate = sdf.format(Date())
             buttonExpenseDate.text = currentDate
+            val calendar = Calendar.getInstance()
+            calendar.time = Date()
+            var currentMonth = calendar.get(Calendar.MONTH) + 1 //Jan starts from 0
+            year = Year.now().toString().toInt()
+            month_number = currentMonth-1
+            updatePiChartView(currentMonth, year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
         }
 
         pieChart.setOnChartValueSelectedListener(object :
