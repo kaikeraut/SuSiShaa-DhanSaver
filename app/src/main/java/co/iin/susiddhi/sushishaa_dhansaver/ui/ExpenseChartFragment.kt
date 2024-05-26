@@ -108,7 +108,7 @@ class ExpenseChartFragment : Fragment() {
                 year -= 1
             }
             buttonExpenseDate.text = "${month_number}, $year"
-            updatePiChartView(month_number, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
+            updatePiChartView(month_number,year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
         }
         buttonMonthNext.setOnClickListener{
             month_number += 1
@@ -118,7 +118,7 @@ class ExpenseChartFragment : Fragment() {
                 year += 1
             }
             buttonExpenseDate.text = "${month_number}, $year"
-            updatePiChartView(month_number, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
+            updatePiChartView(month_number,year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
         }
         buttonExpenseDate.setOnClickListener{
             val currentDate = sdf.format(Date())
@@ -159,11 +159,11 @@ class ExpenseChartFragment : Fragment() {
         val calendar = Calendar.getInstance()
         calendar.time = Date()
         var currentMonth = calendar.get(Calendar.MONTH) + 1 //Jan starts from 0
-        updatePiChartView(currentMonth, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
+        updatePiChartView(currentMonth, year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
     }
 
     private fun updatePiChartView(
-        filterMonth: Int,
+        filterMonth: Int, filterYear:Int,
         pieChart: PieChart?,
         textViewMoneyCredits: TextView,
         textViewMoneyDebits: TextView,
@@ -172,7 +172,7 @@ class ExpenseChartFragment : Fragment() {
         // on below line we are setting user percent value,
         // setting description as enabled and offset for pie chart
         if (pieChart != null) {
-            val piData = populatePiChartField(FILTER_MONTHWISE, filterMonth, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
+            val piData = populatePiChartField(FILTER_MONTHWISE, filterMonth, filterYear, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
 
             pieChart.setUsePercentValues(true)
             pieChart.getDescription().setEnabled(false)
@@ -258,14 +258,14 @@ class ExpenseChartFragment : Fragment() {
         }
     }
 
-    private fun populatePiChartField(filterType: Int, filterValue:Int, textViewMoneyCredits: TextView, textViewMoneyDebits: TextView, textViewMoneyLeft: TextView): PiChartClassModel {
+    private fun populatePiChartField(filterType: Int, filterValue:Int, filterSubvalue:Int, textViewMoneyCredits: TextView, textViewMoneyDebits: TextView, textViewMoneyLeft: TextView): PiChartClassModel {
         val entriesData: ArrayList<PieEntry> = ArrayList()
         val colors: ArrayList<Int> = ArrayList()
         val entriesLegend: MutableList<LegendEntry> = ArrayList()
 
         val db = context?.let { DataBaseHandler(it) }
         val calcData: ExpenseChartCalulatedData? =
-            db?.calculateDateForPieChart(filterType, filterValue)
+            db?.calculateDateForPieChart(filterType, filterValue, filterSubvalue)
 
         if (calcData != null) {
             textViewMoneyCredits.text = "+${calcData.totalCredit.toString()}"

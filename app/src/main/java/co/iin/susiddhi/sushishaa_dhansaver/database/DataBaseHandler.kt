@@ -212,13 +212,13 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
         database.close()
         return result
     }
-    fun readExpenseData(filterBy: Int, filterValue: Int): MutableList<ExpenseClassModel> {
+    fun readExpenseData(filterBy: Int, filterValue: Int, filterSubValue: Int): MutableList<ExpenseClassModel> {
         val expenseList: MutableList<ExpenseClassModel> = ArrayList()
         val db = this.readableDatabase
         var filterString = ""
         if(filterBy == FILTER_MONTHWISE)
         {
-            filterString = "where $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MONTH = $filterValue"
+            filterString = "where $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MONTH = $filterValue and $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_YEAR = $filterSubValue"
         }
         if(filterBy == FILTER_YEARWISE)
         {
@@ -283,10 +283,10 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
         return success
     }
 
-    fun calculateDateForPieChart(filterType:Int, filterValue:Int): ExpenseChartCalulatedData {
+    fun calculateDateForPieChart(filterType:Int, filterValue:Int, filterSubValue: Int): ExpenseChartCalulatedData {
         val db = context?.let { DataBaseHandler(it) }
         // Here, we have created new array list and added data to it
-        val courseModelArrayList: ArrayList<ExpenseClassModel> = db?.readExpenseData(filterType, filterValue) as ArrayList<ExpenseClassModel>
+        val courseModelArrayList: ArrayList<ExpenseClassModel> = db?.readExpenseData(filterType, filterValue, filterSubValue) as ArrayList<ExpenseClassModel>
         var totalCredit = 0
         var totalDebit = 0
         var totalLeft = 0

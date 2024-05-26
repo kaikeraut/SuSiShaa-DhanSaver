@@ -177,8 +177,9 @@ class ExpenseSubCategoryChart : Fragment() {
         val entriesLegend: MutableList<LegendEntry> = ArrayList()
 
         var month = categoryRecvdDate.split(",")[0].toInt()
+        var year = categoryRecvdDate.split(",")[1].toInt()
         val db = context?.let { DataBaseHandler(it) }
-        val calcData: MutableList<ExpenseClassModel>? = db?.readExpenseData(FILTER_MONTHWISE, month+1)
+        val calcData: MutableList<ExpenseClassModel>? = db?.readExpenseData(FILTER_MONTHWISE, month+1, year)
         var hashMap:HashMap<String,Int> = HashMap()
         var categoryTofind = categoryRecvd.split("=")[0]
         var categoryTotalDebit = categoryRecvd.split("=")[1].toInt()
