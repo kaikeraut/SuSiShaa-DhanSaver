@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.ui
+package co.iin.susiddhi.sushishaa_dhansaver.setting.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import co.iin.susiddhi.sushishaa_dhansaver.R
+import co.iin.susiddhi.sushishaa_dhansaver.database.DataBaseHandler
+import co.iin.susiddhi.sushishaa_dhansaver.setting.SettingsFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,10 +21,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [MonthWiseViewFragment.newInstance] factory method to
+ * Use the [AddCategoryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MonthWiseViewFragment : Fragment() {
+class AddCategoryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -38,20 +42,46 @@ class MonthWiseViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var view:View =  inflater.inflate(R.layout.fragment_month_wise_view, container, false)
+        var view:View =  inflater.inflate(R.layout.fragment_add_category, container, false)
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Monthly View"
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Add Category"
         return view
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        var addButton: Button = requireView()?.findViewById(R.id.buttonAddCategory)
+        var editText: EditText = requireView()?.findViewById(R.id.editTextAddSubCategory)
+
+        addButton.setOnClickListener{
+            if(editText.text.isEmpty())
+            {
+                editText.setError("Enter Category !!")
+            }
+            else {
+                var db = context?.let { it1 -> DataBaseHandler(it1) }
+                var ret = db?.insertNewCategory(editText.text.toString())
+                if (ret != null) {
+                    if(!ret.equals(0)) {
+                        editText.setText("")
+                    }
+                }
+            }
+            Log.i("TAG", "Enter Category: "+editText.text)
+        }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // handle arrow click here
         if (item.getItemId() === android.R.id.home) {
             activity?.run {
-                supportFragmentManager.beginTransaction().replace(R.id.main_fragment_section_mainactivity, ExpenseChartFragment())
-                    //.addToBackStack(ExpenseChartFragment().toString())
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerViewSetting, SettingsFragment())
+                    //.addToBackStack(SettingsFragment.toString())
                     .commit()
             }
         }
@@ -64,12 +94,12 @@ class MonthWiseViewFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment MonthWiseViewFragment.
+         * @return A new instance of fragment AddCategoryFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            MonthWiseViewFragment().apply {
+            AddCategoryFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

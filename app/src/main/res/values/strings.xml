@@ -2,4 +2,24 @@
     <string name="app_name">SuShiShaa-DhanSaver</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_setting">Settings</string>
+
+    <string name="add_new_category">Add New Category</string>
+    <string name="add_new_subcategory">Add New Sub-Category</string>
+    <string name="add_expense_income">Add Expense/Income</string>
+    <string name="menu_import">Import Excel</string>
+    <string name="menu_export">Export As Excel</string>
+    <string name="menu_backup">Backup as Mail</string>
+    <string name="menu_about">About Us</string>
+
+    <string name="dayNext">&#62;</string>
+    <string name="dayPrevious">&#60;</string>
+    <string name="monthNext">&#62;&#62;</string>
+    <string name="monthPrevious">&#60;&#60;</string>
+    <string name="expenseDate">12-May-2024</string>
+
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="str_add_category">Add Category</string>
+
 </resources>
