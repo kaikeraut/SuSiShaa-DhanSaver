@@ -77,7 +77,6 @@ class ExpenseSubCategoryChart : Fragment() {
             // handle your code here.
             categoryRecvd = bundle.getString("PiChartCategory").toString()
             categoryRecvdDate = bundle.getString("PiChartCategoryDate").toString()
-
         }
         Log.e("TAG", "GET : $categoryRecvd")
         fillPiChartDetails(categoryRecvd, categoryRecvdDate)

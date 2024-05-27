@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import co.iin.susiddhi.sushishaa_dhansaver.database.DataBaseHandler
+import co.iin.susiddhi.sushishaa_dhansaver.setting.SummaryReportFragment
 import co.iin.susiddhi.sushishaa_dhansaver.ui.AddExpenseFragment
 import co.iin.susiddhi.sushishaa_dhansaver.ui.ExpenseChartFragment
 import co.iin.susiddhi.sushishaa_dhansaver.ui.MonthWiseViewFragment
@@ -79,6 +80,14 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
+                true
+            }
+            R.id.menu_summary -> {
+                val fragmentManager: FragmentManager = supportFragmentManager
+                val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+                transaction.replace(R.id.main_fragment_section_mainactivity, SummaryReportFragment())
+                transaction.addToBackStack(SummaryReportFragment.toString())
+                transaction.commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)

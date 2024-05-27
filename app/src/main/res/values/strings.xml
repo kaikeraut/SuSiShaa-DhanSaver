@@ -21,5 +21,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="str_add_category">Add Category</string>
+    <string name="menu_summary">Summary</string>
+    <string name="menu_report">View Summary Report</string>
 
 </resources>
