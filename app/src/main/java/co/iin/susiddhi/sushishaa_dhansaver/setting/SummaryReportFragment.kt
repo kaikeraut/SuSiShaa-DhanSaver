@@ -10,12 +10,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.DataBaseHandler
-import co.iin.susiddhi.sushishaa_dhansaver.database.FILTER_MONTHWISE
-import co.iin.susiddhi.sushishaa_dhansaver.database.SUSISHAA_CATEGORY_INCOME
-import co.iin.susiddhi.sushishaa_dhansaver.database.SUSISHAA_CATEGORY_INVESTMENT
+import co.iin.susiddhi.sushishaa_dhansaver.database.*
 import co.iin.susiddhi.sushishaa_dhansaver.ui.ExpenseChartFragment
 import java.time.Year
+import kotlin.math.roundToInt
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -139,28 +137,31 @@ class SummaryReportFragment : Fragment() {
         var monthTotalSave = 0
         var monthTotalInvestment = 0
 
-        val yearMaxExpenseSpent = 0
-        val yearMaxExpenseMonth = 0
-        val yearMaxExpenseCategory = 0
-        val yearMaxCategoryName = 0
-        val yearAvgExpense = 0
-        val yearTotalIncome = 0
-        val yearTotalExpnse = 0
-        val yearTotalSaving = 0
-        val yearTotalExpnsePercent = 0
-        val yearTotalInvestmentPercent = 0
-        val yearTotalSavingPercent = 0
-        val yearTotalInvestment = 0
+        var yearMaxExpenseSpent = 0
+        var yearMaxExpenseMonth = 0
+        var yearMaxExpenseCategory = 0
+        var yearMaxCategoryName = ""
+        var yearAvgExpense = 0
+        var yearTotalIncome = 0
+        var yearTotalExpnse = 0
+        var yearTotalSaving = 0
+        var yearTotalExpnsePercent = 0.0
+        var yearTotalInvestmentPercent = 0.0
+        var yearTotalSavingPercent = 0.0
+        var yearTotalInvestment = 0
 
 
 
         buttonViewReport.setOnClickListener {
+            var mon_num = monthNameList.indexOf(monthSelected)
+            var db = context?.let { it1 -> DataBaseHandler(it1) }
             if(checkBoxMonth.isChecked)
             {
-                var mon_num = monthNameList.indexOf(monthSelected)
-                var db = context?.let { it1 -> DataBaseHandler(it1) }
+                //var mon_num = monthNameList.indexOf(monthSelected)
+                //var db = context?.let { it1 -> DataBaseHandler(it1) }
                 var dbData = db?.readExpenseData(FILTER_MONTHWISE, mon_num+1, yearSelected.toInt())
-                if (dbData != null) {
+                if (dbData != null)
+                {
                     var hasMapCategory:HashMap<String, Int> = HashMap()
                     for(data in dbData) {
                         if(data.rupee > monthMaxExpenseSpent && data.category != SUSISHAA_CATEGORY_INCOME){
@@ -218,12 +219,70 @@ class SummaryReportFragment : Fragment() {
             }
             else if(checkBoxYear.isChecked)
             {
+                var dbData = db?.readExpenseData(FILTER_YEARWISE, yearSelected.toInt(), yearSelected.toInt())
+                var hasMapCategory:HashMap<String, Int> = HashMap()
+                var hasMapMonth:HashMap<Int, Int> = HashMap()
+                for(data in dbData!!) {
+                    if(data.category != SUSISHAA_CATEGORY_INCOME) {
+                        if (hasMapMonth.containsKey(data.month)) {
+                            hasMapMonth[data.month] = hasMapMonth[data.month]?.plus(data.rupee)!!
+                        } else {
+                            hasMapMonth[data.month] = data.rupee
+                        }
+                    }
+                    if(hasMapCategory.containsKey(data.category))
+                    {
+                        hasMapCategory[data.category] = hasMapCategory[data.category]?.plus(data.rupee)!!
+                    }
+                    else
+                    {
+                        hasMapCategory[data.category] = data.rupee
+                    }
+                }//for
+
+                for(monExp in hasMapMonth)
+                {
+                    if(yearMaxExpenseSpent < monExp.value)
+                    {
+                        yearMaxExpenseSpent = monExp.value
+                        yearMaxExpenseMonth = monExp.key
+                    }
+                }
+                for(cate in hasMapCategory)
+                {
+                    if(yearMaxExpenseCategory < cate.value && cate.key != SUSISHAA_CATEGORY_INCOME)
+                    {
+                        yearMaxExpenseCategory = cate.value
+                        yearMaxCategoryName = cate.key
+                    }
+                    if(cate.key == SUSISHAA_CATEGORY_INCOME)
+                    {
+                        yearTotalIncome += cate.value
+                    }
+                    else
+                    {
+                        yearTotalExpnse += cate.value
+                        if(cate.key == SUSISHAA_CATEGORY_INVESTMENT){
+                            yearTotalInvestment += cate.value
+                        }
+                    }
+                }
+                yearAvgExpense = yearTotalExpnse/12
+                yearTotalSaving = yearTotalIncome - yearTotalExpnse
+                try {
+                    yearTotalExpnsePercent = ((yearTotalExpnse / yearTotalIncome.toFloat()) * 100).toDouble()
+                    yearTotalInvestmentPercent = ((yearTotalInvestment / yearTotalIncome.toFloat()) * 100).toDouble()
+                    yearTotalSavingPercent = (((yearTotalSaving / yearTotalIncome.toFloat()) * 100).toDouble())
+                }catch (e:Exception){
+                    Toast.makeText(context,"Income Data Missing", Toast.LENGTH_SHORT).show()
+                }
                 var yearlyReport = "Showing Report for $yearSelected Year\n"+
                         "\nMaximum Rs.$yearMaxExpenseSpent on $yearMaxExpenseMonth Month"+
                         "\nThis Year total Rs.$yearMaxExpenseCategory spent on $yearMaxCategoryName" +
                         "\nAverage you spent Rs.$yearAvgExpense per month this year"+
-                        "\nTotal Income: $yearTotalIncome Total Expense:$yearTotalExpnse Investment:$yearTotalInvestment Savings:$yearTotalSaving" +
-                        "\nExpense:$yearTotalExpnsePercent Investment:$yearTotalInvestmentPercent Savings:$yearTotalSavingPercent"
+                        "\nTotal Income: $yearTotalIncome \nTotal Expense:$yearTotalExpnse (${roundTheNumber(yearTotalExpnsePercent)} %)" +
+                        "\nTotal Investment:$yearTotalInvestment (${roundTheNumber(yearTotalInvestmentPercent)} %)" +
+                        "\nTotal Savings:$yearTotalSaving (${roundTheNumber(yearTotalSavingPercent)} %)"
 2
                 checkBoxMonth.error = null
                 checkBoxYear.error = null
@@ -237,6 +296,11 @@ class SummaryReportFragment : Fragment() {
         }
     }
 
+    fun roundTheNumber(numInDouble: Double): String {
+
+        return "%.2f".format(numInDouble)
+
+    }
     fun getMonthDays(month: Int, year: Int): Int {
         val daysInMonth: Int = if (month == 4 || month == 6 || month == 9 || month == 11) {
             30
