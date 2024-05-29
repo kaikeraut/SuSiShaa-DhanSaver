@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4E7E7"
     tools:context=".ui.MonthWiseViewFragment">
 
     <LinearLayout
@@ -12,11 +14,14 @@
 
         <Button
             android:id="@+id/buttonMonthYear"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="Switch Yearly View" />
+            android:layout_margin="5dp"
+            android:text="Switch Yearly View"
+            android:textColor="@color/buttonTextColor"
+            android:textSize="14sp"
+            app:strokeColor="@color/buttonStrokeColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,6 +30,7 @@
 
             <Button
                 android:id="@+id/buttonPrev"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -32,10 +38,14 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="0"
-                android:text="Prev" />
+                android:text="PREV"
+                android:textColor="@color/buttonTextColor"
+                android:textSize="14sp"
+                app:strokeColor="@color/buttonStrokeColor" />
 
             <Button
                 android:id="@+id/buttonDate"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -43,10 +53,14 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="10"
-                android:text="May, 2024" />
+                android:text="May, 2024"
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/buttonNext"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:textColor="@color/buttonTextColor"
+                app:strokeColor="@color/buttonStrokeColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -54,7 +68,8 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="0"
-                android:text="Next" />
+                android:text="NEXT"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout

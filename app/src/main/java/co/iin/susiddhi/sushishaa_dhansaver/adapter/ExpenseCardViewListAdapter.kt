@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import co.iin.susiddhi.sushishaa_dhansaver.R
 import co.iin.susiddhi.sushishaa_dhansaver.database.ExpenseClassModel
@@ -31,6 +32,7 @@ class ExpenseCardViewListAdapter (private val context: Context, courseModelArray
         val SubCategory: TextView
         val Category: TextView
         val Reason: TextView
+        val CardViewId: CardView
         init {
             ExpenseRupee = itemView.findViewById(R.id.textExpenseRupee)
             DateTime = itemView.findViewById(R.id.textDateTime)
@@ -38,6 +40,7 @@ class ExpenseCardViewListAdapter (private val context: Context, courseModelArray
             SubCategory = itemView.findViewById(R.id.textSubCategory)
             Category = itemView.findViewById(R.id.textCategory)
             Reason = itemView.findViewById(R.id.textReason)
+            CardViewId = itemView.findViewById(R.id.cardViewId)
         }
     }
 
@@ -61,12 +64,13 @@ class ExpenseCardViewListAdapter (private val context: Context, courseModelArray
 
         if(model.category == SUSISHAA_CATEGORY_INCOME)
         {
+            holder?.CardViewId?.setCardBackgroundColor(context.getColor(R.color.creditColorTexts))
             holder?.ExpenseRupee?.setText(model.rupee.toString())
             holder?.ExpenseRupee?.setBackgroundColor(context.getColor(R.color.creditColor))
-            //holder?.ExpenseRupee?.setTextColor(Color.GREEN)
         }
         else
         {
+            holder?.CardViewId?.setCardBackgroundColor(context.getColor(R.color.debitColorText))
             holder?.ExpenseRupee?.setText(model.rupee.toString())
             holder?.ExpenseRupee?.setBackgroundColor(context.getColor(R.color.debitColor))
             //holder?.ExpenseRupee?.setTextColor(Color.RED)

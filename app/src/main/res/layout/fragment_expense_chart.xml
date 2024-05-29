@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ExpenseChartFragment">
 
 
@@ -21,6 +22,10 @@
 
             <Button
                 android:id="@+id/buttonMonthPrevious"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:textColor="@color/buttonTextColor"
+                app:strokeColor="@color/buttonStrokeColor"
+                android:textSize="14sp"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -29,6 +34,10 @@
 
             <Button
                 android:id="@+id/buttonDayPrevious"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:textColor="@color/buttonTextColor"
+                app:strokeColor="@color/buttonStrokeColor"
+                android:textSize="14sp"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -45,6 +54,10 @@
 
             <Button
                 android:id="@+id/buttonDayNext"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:textColor="@color/buttonTextColor"
+                app:strokeColor="@color/buttonStrokeColor"
+                android:textSize="14sp"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -53,6 +66,10 @@
 
             <Button
                 android:id="@+id/buttonMonthNext"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:textColor="@color/buttonTextColor"
+                app:strokeColor="@color/buttonStrokeColor"
+                android:textSize="14sp"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
