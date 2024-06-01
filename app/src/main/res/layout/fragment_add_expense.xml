@@ -15,52 +15,55 @@
             android:id="@+id/editTextExpenseDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="DD/MM/YYYY"
-            android:inputType="text" />
+            android:inputType="number|text"
+            android:maxLength="10" />
 
         <EditText
             android:id="@+id/editTextExpenseTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="MM:HH"
-            android:inputType="text" />
+            android:inputType="number|text"
+            android:maxLength="5" />
 
         <EditText
             android:id="@+id/editTextExpenseRupee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Rs. 1000"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="8" />
 
         <Spinner
             android:id="@+id/spinnerCategoryList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="5dp" />
 
         <Spinner
             android:id="@+id/spinnerSubCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="5dp" />
 
         <Spinner
             android:id="@+id/spinnerMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="5dp" />
 
         <EditText
             android:id="@+id/editTextExpenseReason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Reason"
             android:inputType="textMultiLine|textPersonName" />
@@ -75,7 +78,7 @@
                 android:id="@+id/checkBoxEssentials"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:text="Essentials" />
 
@@ -83,7 +86,7 @@
                 android:id="@+id/checkBoxNonEssentials"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:text="Non-Essentials" />
         </LinearLayout>
@@ -93,7 +96,7 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:text="Add"
             android:textSize="14sp"
             android:typeface="normal" />

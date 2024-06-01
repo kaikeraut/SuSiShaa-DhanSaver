@@ -1,21 +1,19 @@
 package co.iin.susiddhi.sushishaa_dhansaver.ui
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.DataBaseHandler
 import co.iin.susiddhi.sushishaa_dhansaver.database.*
-import java.util.ArrayList
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -153,25 +151,45 @@ class AddExpenseFragment : Fragment() {
                 // write code to perform some action
             }
         }
+        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm")
+        var currentDateTime = sdf.format(Date())
+        var todayDate = currentDateTime.split(" ")[0]
+        editTextExpenseDay.setText(todayDate)
+        editTextExpenseTime.setText(currentDateTime.split(" ")[1])
 
-        editTextExpenseDay.addTextChangedListener {
-            if(editTextExpenseDay.text.length == 2)
+        editTextExpenseDay.setOnKeyListener { v, keyCode, event -> //You can identify which key pressed by checking keyCode value with KeyEvent.KEYCODE_
+            Log.e("keyCode", "keyCode: ${keyCode} selc:${editTextExpenseDay.selectionStart} -- ${editTextExpenseDay.selectionEnd}")
+            if (keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_DPAD_LEFT ||
+                 keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                //this is for backspace
+                editTextExpenseDay.setSelection(editTextExpenseDay.selectionStart)
+            }else
             {
-                editTextExpenseDay.setText("${editTextExpenseDay.text}/")
+                if(editTextExpenseDay.text.length == 2)
+                {
+                    editTextExpenseDay.setText("${editTextExpenseDay.text}/")
+                    editTextExpenseDay.setSelection(editTextExpenseDay.text.length)
+                }
+                else if(editTextExpenseDay.text.length == 5)
+                {
+                    editTextExpenseDay.setText("${editTextExpenseDay.text}/")
+                    editTextExpenseDay.setSelection(editTextExpenseDay.text.length)
+                }
             }
-            else if(editTextExpenseDay.text.length == 5)
-            {
-                editTextExpenseDay.setText("${editTextExpenseDay.text}/")
-            }
-            editTextExpenseDay.setSelection(editTextExpenseDay.text.length)
+            false
         }
-
-        editTextExpenseTime.addTextChangedListener {
-            if(editTextExpenseTime.text.length == 2)
+        editTextExpenseTime.setOnKeyListener { v, keyCode, event -> //You can identify which key pressed by checking keyCode value with KeyEvent.KEYCODE_
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                //this is for backspace
+            }else
             {
-                editTextExpenseTime.setText("${editTextExpenseTime.text}:")
+                if(editTextExpenseTime.text.length == 2)
+                {
+                    editTextExpenseTime.setText("${editTextExpenseTime.text}:")
+                    editTextExpenseDay.setSelection(editTextExpenseDay.text.length)
+                }
             }
-            editTextExpenseTime.setSelection(editTextExpenseTime.text.length)
+            false
         }
 
         addButton.setOnClickListener{
@@ -255,6 +273,17 @@ class AddExpenseFragment : Fragment() {
                     editTextExpenseRupee.text.toString().toInt(), finalModeSelected.toString(),
                     finalCategorySelected, finalSubCategorySelected, editTextExpenseReason.text.toString(),
                     "Vineet", month,year, checkedBox))
+                if(!ret.equals(0))
+                {
+                    val currentDateTime = sdf.format(Date())
+                    var todayDate = currentDateTime.split(" ")[0]
+                    editTextExpenseDay.setText(todayDate)
+                    editTextExpenseTime.setText(currentDateTime.split(" ")[1])
+                    editTextExpenseRupee.text.clear()
+                    editTextExpenseReason.text.clear()
+                    essentialChkButton.isChecked = false
+                    nonEssentialChkButton.isChecked = false
+                }
             }
         }
     }

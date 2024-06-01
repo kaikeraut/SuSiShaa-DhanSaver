@@ -124,35 +124,32 @@ class SummaryReportFragment : Fragment() {
             }
         }
 
-        var monthMaxExpenseSpent = 0
-        var monthMaxExpenseDay = ""
-        var monthMaxCategoryName = ""
-        var monthMaxExpenseCategory = 0
-        var monthTotalDays = 0
-        var monthTotalDaysMoneySpent = 0
-        var monthTotalDaysMoneyNoExpense = 0
-        var monthAvgExpense = 0
-        var monthTotalIncome = 0
-        var monthTotalExpnse = 0
-        var monthTotalSave = 0
-        var monthTotalInvestment = 0
-
-        var yearMaxExpenseSpent = 0
-        var yearMaxExpenseMonth = 0
-        var yearMaxExpenseCategory = 0
-        var yearMaxCategoryName = ""
-        var yearAvgExpense = 0
-        var yearTotalIncome = 0
-        var yearTotalExpnse = 0
-        var yearTotalSaving = 0
-        var yearTotalExpnsePercent = 0.0
-        var yearTotalInvestmentPercent = 0.0
-        var yearTotalSavingPercent = 0.0
-        var yearTotalInvestment = 0
-
-
-
         buttonViewReport.setOnClickListener {
+            var monthMaxExpenseSpent = 0
+            var monthMaxExpenseDay = ""
+            var monthMaxCategoryName = ""
+            var monthMaxExpenseCategory = 0
+            var monthTotalDays = 0
+            var monthTotalDaysMoneySpent = 0
+            var monthTotalDaysMoneyNoExpense = 0
+            var monthAvgExpense = 0
+            var monthTotalIncome = 0
+            var monthTotalExpnse = 0
+            var monthTotalSave = 0
+            var monthTotalInvestment = 0
+
+            var yearMaxExpenseSpent = 0
+            var yearMaxExpenseMonth = 0
+            var yearMaxExpenseCategory = 0
+            var yearMaxCategoryName = ""
+            var yearAvgExpense = 0
+            var yearTotalIncome = 0
+            var yearTotalExpnse = 0
+            var yearTotalSaving = 0
+            var yearTotalExpnsePercent = 0.0
+            var yearTotalInvestmentPercent = 0.0
+            var yearTotalSavingPercent = 0.0
+            var yearTotalInvestment = 0
             var mon_num = monthNameList.indexOf(monthSelected)
             var db = context?.let { it1 -> DataBaseHandler(it1) }
             if(checkBoxMonth.isChecked)
@@ -160,6 +157,7 @@ class SummaryReportFragment : Fragment() {
                 //var mon_num = monthNameList.indexOf(monthSelected)
                 //var db = context?.let { it1 -> DataBaseHandler(it1) }
                 var dbData = db?.readExpenseData(FILTER_MONTHWISE, mon_num+1, yearSelected.toInt())
+                Log.i("MonthReport", "Month:${mon_num+1} year:${yearSelected}: DataRead Size: ${dbData?.size}")
                 if (dbData != null)
                 {
                     var hasMapCategory:HashMap<String, Int> = HashMap()
@@ -222,6 +220,7 @@ class SummaryReportFragment : Fragment() {
                 var dbData = db?.readExpenseData(FILTER_YEARWISE, yearSelected.toInt(), yearSelected.toInt())
                 var hasMapCategory:HashMap<String, Int> = HashMap()
                 var hasMapMonth:HashMap<Int, Int> = HashMap()
+                Log.i("YearReport", "year:${yearSelected}: DataRead Size: ${dbData?.size}")
                 for(data in dbData!!) {
                     if(data.category != SUSISHAA_CATEGORY_INCOME) {
                         if (hasMapMonth.containsKey(data.month)) {
@@ -270,9 +269,19 @@ class SummaryReportFragment : Fragment() {
                 yearAvgExpense = yearTotalExpnse/12
                 yearTotalSaving = yearTotalIncome - yearTotalExpnse
                 try {
-                    yearTotalExpnsePercent = ((yearTotalExpnse / yearTotalIncome.toFloat()) * 100).toDouble()
-                    yearTotalInvestmentPercent = ((yearTotalInvestment / yearTotalIncome.toFloat()) * 100).toDouble()
-                    yearTotalSavingPercent = (((yearTotalSaving / yearTotalIncome.toFloat()) * 100).toDouble())
+                    if(yearTotalIncome == 0)
+                    {
+                        yearTotalExpnsePercent = 0.0
+                        yearTotalInvestmentPercent = 0.0
+                        yearTotalSavingPercent = 0.0
+                    }else {
+                        yearTotalExpnsePercent =
+                            ((yearTotalExpnse / yearTotalIncome.toFloat()) * 100).toDouble()
+                        yearTotalInvestmentPercent =
+                            ((yearTotalInvestment / yearTotalIncome.toFloat()) * 100).toDouble()
+                        yearTotalSavingPercent =
+                            (((yearTotalSaving / yearTotalIncome.toFloat()) * 100).toDouble())
+                    }
                 }catch (e:Exception){
                     Toast.makeText(context,"Income Data Missing", Toast.LENGTH_SHORT).show()
                 }
@@ -283,7 +292,7 @@ class SummaryReportFragment : Fragment() {
                         "\nTotal Income: $yearTotalIncome \nTotal Expense:$yearTotalExpnse (${roundTheNumber(yearTotalExpnsePercent)} %)" +
                         "\nTotal Investment:$yearTotalInvestment (${roundTheNumber(yearTotalInvestmentPercent)} %)" +
                         "\nTotal Savings:$yearTotalSaving (${roundTheNumber(yearTotalSavingPercent)} %)"
-2
+
                 checkBoxMonth.error = null
                 checkBoxYear.error = null
                 textviewReport.text = yearlyReport
