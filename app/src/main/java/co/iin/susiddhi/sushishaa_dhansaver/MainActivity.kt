@@ -1,12 +1,17 @@
 package co.iin.susiddhi.sushishaa_dhansaver
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -56,6 +61,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         bottomNav.setSelectedItemId(R.id.menuHomeView)
+
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 102)
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 103)
     }//OnCreate
 
     private fun replaceFragment(fragment: Fragment) {
@@ -94,5 +102,13 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-
+    // Function to check and request permission.
+    private fun checkPermission(permission: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this@MainActivity, permission) == PackageManager.PERMISSION_DENIED) {
+            // Requesting the permission
+            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
+        } else {
+            //Toast.makeText(this@MainActivity, "Permission already granted", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

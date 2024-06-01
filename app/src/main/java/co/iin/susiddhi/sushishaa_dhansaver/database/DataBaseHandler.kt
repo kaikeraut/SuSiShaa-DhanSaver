@@ -4,8 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.core.net.toUri
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 
 const val FILTER_NONE = 0
 const val FILTER_MONTHWISE = 1
@@ -247,6 +252,46 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
             while (result.moveToNext())
         }
         return expenseList
+    }//ReadExpenseData
+
+    fun readAllExpenseDataAndSaveToFile(filename:String): String {
+        var filename1 = filename.replace("#", "_")
+        filename1 = filename1.replace("/", "_")
+        filename1= filename1.replace(":", "_")
+        filename1 += ".txt"
+        var fs = context.openFileOutput(filename1, Context.MODE_PRIVATE)
+        try {
+            Log.e("File", "file created:${fs}")
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        val db = this.readableDatabase
+        val query = "Select * from $SUSISHAA_TABLENAME_EXPENSE"
+        Log.i("READ_DB", "READ Query:$query")
+        val result = db.rawQuery(query, null)
+        if (result.moveToFirst()) {
+            do {
+                var id = result.getInt(result.getColumnIndexOrThrow(COL_ID))
+                val date = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_DATE))
+                val rupee = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_RUPEE))
+                val mode = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MODE))
+                val purpose = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_PURPOSE))
+                val category = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_CATEGORY))
+                val subCategory = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_SUB_CATEGORY))
+                val user = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_USER))
+                val month = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MONTH))
+                val year = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_YEAR))
+                val essential = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_ESSENTIAL))
+                val singleExpense = ExpenseClassModel(id, date, rupee, mode, category, subCategory,purpose, user, month, year, essential)
+
+                fs.write("$id~$date~$rupee~$mode~$category~$subCategory~$purpose~$user~$month~$year~$essential".toByteArray())
+                Log.i("DB_READ", "$id, $date, $rupee, $mode, $purpose, $category, $subCategory, $user, $month, $year $essential")
+            }
+            while (result.moveToNext())
+        }
+        fs.close()
+
+        return filename1
     }//ReadExpenseData
 
     //method to update data

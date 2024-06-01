@@ -18,10 +18,11 @@
         <entry key="app/src/main/res/layout/fragment_import.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_month_wise_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.23435897435897435" />
-        <entry key="app/src/main/res/layout/fragment_summary_report.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/fragment_summary_report.xml" value="0.14666666666666667" />
         <entry key="app/src/main/res/layout/fragment_year_wise_view.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.23435897435897435" />
         <entry key="app/src/main/res/menu/main_activity_menu.xml" value="0.23435897435897435" />
+        <entry key="app/src/main/res/xml/provider_paths.xml" value="0.11785714285714285" />
       </map>
     </option>
   </component>
