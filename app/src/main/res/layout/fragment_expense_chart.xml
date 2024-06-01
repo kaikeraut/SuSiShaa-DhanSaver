@@ -46,11 +46,13 @@
 
             <Button
                 android:id="@+id/buttonExpenseDate"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="@string/expenseDate" />
+                android:text="@string/expenseDate"
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/buttonDayNext"

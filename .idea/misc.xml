@@ -7,16 +7,19 @@
         <entry key="app/src/main/res/layout/activity_setting.xml" value="0.23435897435897435" />
         <entry key="app/src/main/res/layout/expense_cardview_adapter_layout.xml" value="0.23435897435897435" />
         <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.23435897435897435" />
-        <entry key="app/src/main/res/layout/fragment_add_category.xml" value="0.23435897435897435" />
-        <entry key="app/src/main/res/layout/fragment_add_expense.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_add_category.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/fragment_add_expense.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_add_sub_category.xml" value="0.23435897435897435" />
+        <entry key="app/src/main/res/layout/fragment_backup.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_expense_card_view_list.xml" value="0.22395833333333334" />
-        <entry key="app/src/main/res/layout/fragment_expense_chart.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_expense_chart.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_expense_sub_category_chart.xml" value="0.23435897435897435" />
-        <entry key="app/src/main/res/layout/fragment_month_wise_view.xml" value="0.23435897435897435" />
+        <entry key="app/src/main/res/layout/fragment_export.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/fragment_import.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/fragment_month_wise_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.23435897435897435" />
-        <entry key="app/src/main/res/layout/fragment_summary_report.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_year_wise_view.xml" value="0.23435897435897435" />
+        <entry key="app/src/main/res/layout/fragment_summary_report.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/fragment_year_wise_view.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.23435897435897435" />
         <entry key="app/src/main/res/menu/main_activity_menu.xml" value="0.23435897435897435" />
       </map>
