@@ -60,15 +60,16 @@ class SettingsFragment : Fragment() {
         var textViewSummaryReport: TextView = requireView()?.findViewById(R.id.textViewSummaryReport)
         var textViewCategory: TextView = requireView()?.findViewById(R.id.textViewNewCategory)
         var textViewSubCategory: TextView = requireView()?.findViewById(R.id.textViewSubCategory)
-        var textViewExport: TextView = requireView()?.findViewById(R.id.textViewExport)
+        //var textViewExport: TextView = requireView()?.findViewById(R.id.textViewExport)
         var textViewImport: TextView = requireView()?.findViewById(R.id.textViewImport)
         var textViewBackup: TextView = requireView()?.findViewById(R.id.textViewBackupMail)
         var textViewAboutUs: TextView = requireView()?.findViewById(R.id.textViewAboutUs)
 
+
         textViewSummaryReport.setOnClickListener { replaceFragment(SummaryReportFragment()) }
         textViewCategory.setOnClickListener { replaceFragment(AddCategoryFragment()) }
         textViewSubCategory.setOnClickListener { replaceFragment(AddSubCategoryFragment()) }
-        textViewExport.setOnClickListener { replaceFragment(ExportFragment()) }
+        //textViewExport.setOnClickListener { replaceFragment(ExportFragment()) }
         textViewImport.setOnClickListener { replaceFragment(ImportFragment()) }
         textViewBackup.setOnClickListener { replaceFragment(BackupFragment()) }
         textViewAboutUs.setOnClickListener { replaceFragment(AboutUsFragment()) }

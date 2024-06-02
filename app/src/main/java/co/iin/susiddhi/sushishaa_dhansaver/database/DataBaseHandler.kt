@@ -123,10 +123,10 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
         contentValues.put(SUSISHAA_COL_NAME_SUB_CATEGORY, stringSubCate)
         val result = database.insert(SUSISHAA_TABLENAME_CATEGORY, null, contentValues)
         if (result == (0).toLong()) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
         }
         else {
-            Toast.makeText(context, "Category Database filled", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Category Database filled", Toast.LENGTH_SHORT).show()
         }
         database.close()
     }
@@ -137,10 +137,10 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
         contentValues.put(SUSISHAA_COL_NAME_CATEGORY, newCategory)
         val result = database.insert(SUSISHAA_TABLENAME_CATEGORY, null, contentValues)
         if (result == (0).toLong()) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
         }
         else {
-            Toast.makeText(context, "New Category $newCategory Added", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(context, "New Category $newCategory Added", Toast.LENGTH_SHORT).show()
         }
         database.close()
         //readCategoryTable()
@@ -209,14 +209,26 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
 
         val result = database.insert(SUSISHAA_TABLENAME_EXPENSE, null, contentValues)
         if (result == (0).toLong()) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
         }
         else {
-            Toast.makeText(context, "Expense Added", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Expense Added", Toast.LENGTH_SHORT).show()
         }
         database.close()
         return result
     }
+
+    fun insertImportedExpenseData(expense: ExpenseClassModel): Int {
+        var ret = updateExpenseData(expense)
+        Log.e("insertImportedExpenseData", "UPDATE REt: $ret")
+        if(ret == 0)
+        {
+            var ret = insertExpenseData(expense)
+            Log.e("insertImportedExpenseData", "INSERT REt: $ret")
+        }
+        return ret
+    }
+
     fun readExpenseData(filterBy: Int, filterValue: Int, filterSubValue: Int): MutableList<ExpenseClassModel> {
         val expenseList: MutableList<ExpenseClassModel> = ArrayList()
         val db = this.readableDatabase
@@ -284,7 +296,7 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
                 val essential = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_ESSENTIAL))
                 val singleExpense = ExpenseClassModel(id, date, rupee, mode, category, subCategory,purpose, user, month, year, essential)
 
-                fs.write("$id~$date~$rupee~$mode~$category~$subCategory~$purpose~$user~$month~$year~$essential".toByteArray())
+                fs.write("$id~$date~$rupee~$mode~$category~$subCategory~$purpose~$user~$month~$year~$essential\n".toByteArray())
                 Log.i("DB_READ", "$id, $date, $rupee, $mode, $purpose, $category, $subCategory, $user, $month, $year $essential")
             }
             while (result.moveToNext())
@@ -295,7 +307,7 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
     }//ReadExpenseData
 
     //method to update data
-    fun updateExpenseData(expense: ExpenseClassModel):Int{
+    fun updateExpenseData(expense: ExpenseClassModel): Int {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(COL_ID, expense.id)

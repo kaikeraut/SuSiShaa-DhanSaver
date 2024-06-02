@@ -283,6 +283,9 @@ class AddExpenseFragment : Fragment() {
                     editTextExpenseReason.text.clear()
                     essentialChkButton.isChecked = false
                     nonEssentialChkButton.isChecked = false
+                    essentialChkButton.isEnabled = true
+                    nonEssentialChkButton.isEnabled = true
+                    Toast.makeText(context, "Expense Added", Toast.LENGTH_SHORT).show()
                 }
             }
         }

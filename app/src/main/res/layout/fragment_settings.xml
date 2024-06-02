@@ -79,22 +79,6 @@
             android:background="#1E88E5" />
 
         <TextView
-            android:id="@+id/textViewExport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="@string/menu_export"
-            android:textSize="20sp"
-            android:typeface="normal" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1E88E5" />
-
-        <TextView
             android:id="@+id/textViewImport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

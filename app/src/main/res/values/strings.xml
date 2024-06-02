@@ -7,9 +7,9 @@
     <string name="add_new_category">Add New Category</string>
     <string name="add_new_subcategory">Add New Sub-Category</string>
     <string name="add_expense_income">Add Expense/Income</string>
-    <string name="menu_import">Import Excel</string>
+    <string name="menu_import">Import Backup File</string>
     <string name="menu_export">Export As Excel</string>
-    <string name="menu_backup">Backup as Mail</string>
+    <string name="menu_backup">Backup via Mail</string>
     <string name="menu_about">About Us</string>
 
     <string name="dayNext">&#62;</string>
