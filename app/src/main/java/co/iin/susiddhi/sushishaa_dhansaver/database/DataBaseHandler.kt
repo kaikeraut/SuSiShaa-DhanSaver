@@ -241,7 +241,7 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
         {
             filterString = "where $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_YEAR = $filterValue"
         }
-        val query = "Select * from $SUSISHAA_TABLENAME_EXPENSE $filterString"
+        val query = "Select * from $SUSISHAA_TABLENAME_EXPENSE $filterString ORDER BY $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_DATE ASC"
         Log.i("READ_DB", "READ Query:$query")
         val result = db.rawQuery(query, null)
         if (result.moveToFirst()) {
