@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/fragment_add_expense.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_add_sub_category.xml" value="0.23435897435897435" />
         <entry key="app/src/main/res/layout/fragment_backup.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/fragment_edit_expense.xml" value="0.22314814814814815" />
         <entry key="app/src/main/res/layout/fragment_expense_card_view_list.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/layout/fragment_expense_chart.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_expense_sub_category_chart.xml" value="0.23435897435897435" />

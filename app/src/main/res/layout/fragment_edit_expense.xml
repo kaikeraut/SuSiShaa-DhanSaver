@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AddExpenseFragment">
+    tools:context=".ui.EditExpenseFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,10 +97,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Add"
+            android:text="Update"
+            android:textSize="14sp"
+            android:typeface="normal" />
+
+        <Button
+            android:id="@+id/buttonExpenseDelete"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Delete"
             android:textSize="14sp"
             android:typeface="normal" />
 
     </LinearLayout>
+
 
 </FrameLayout>

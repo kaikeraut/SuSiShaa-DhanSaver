@@ -1,5 +1,6 @@
 package co.iin.susiddhi.sushishaa_dhansaver.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,12 +8,16 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.iin.susiddhi.sushishaa_dhansaver.R
 import co.iin.susiddhi.sushishaa_dhansaver.adapter.ExpenseCardViewListAdapter
 import co.iin.susiddhi.sushishaa_dhansaver.database.*
+import java.util.Arrays.toString
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +29,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ExpenseCardViewListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class ExpenseCardViewListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -36,6 +42,8 @@ class ExpenseCardViewListFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
+   //private lateinit var interfaceAdapter:InterfaceAdapterViewClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -126,7 +134,11 @@ class ExpenseCardViewListFragment : Fragment() {
                 courseModelArrayListNew.add(ExpenseClassModel(0, "",0,"","","",
                     "NO EXPENSE AVAILABLE", " ", 0, 0, 0))
             }
-            var courseAdapter = context?.let { ExpenseCardViewListAdapter(it, courseModelArrayListNew) }
+            var courseAdapter = context?.let {
+                ExpenseCardViewListAdapter(it, courseModelArrayListNew){ item->
+                    onListItemClick(item)
+                }
+            }
             recycleView.adapter = courseAdapter
         }
         else {
@@ -136,15 +148,34 @@ class ExpenseCardViewListFragment : Fragment() {
                     "NO EXPENSE AVAILABLE", " ", 0, 0, 0))
             }
             // we are initializing our adapter class and passing our arraylist to it.
-             var courseAdapter = context?.let { ExpenseCardViewListAdapter(it, courseModelArrayList) }
+             var courseAdapter = context?.let {
+                 ExpenseCardViewListAdapter(it, courseModelArrayList){ item->
+                     onListItemClick(item)
+                 }
+             }
             recycleView.adapter = courseAdapter
+
         }
         if(callerFunction == ExpenseSubCategoryChart.toString())
         {
             (requireActivity() as AppCompatActivity).supportActionBar?.title = "SubCategory View"
         }
+
     }
 
+    fun onListItemClick(item:ExpenseClassModel){
+        //Toast.makeText(context, "Clicked $item", Toast.LENGTH_SHORT).show()
+        val bundle = Bundle()
+        bundle.putString("AddExpenseEditDeleteRequest", "${item.id}~${item.date}}~${item.rupee}~${item.mode}~${item.category}~${item.sub_category}~${item.purpose}~${item.user}~${item.month}~${item.year}~${item.essential}") // Put anything what you want
+        var fragment = EditExpenseFragment()
+        fragment.arguments = bundle
+        activity?.run {
+            supportFragmentManager.beginTransaction().replace(
+                R.id.main_fragment_section_mainactivity,
+                fragment
+            ).addToBackStack("EditExpenseFragment").commit()
+        }
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // handle arrow click here
         if (item.getItemId() === android.R.id.home) {
@@ -186,5 +217,9 @@ class ExpenseCardViewListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+        fun onAdapterItemClickListener(data: ExpenseClassModel) {
+        Log.e("AdapterClick", "${data.category}, ${data.sub_category} ${data.rupee}")
     }
 }

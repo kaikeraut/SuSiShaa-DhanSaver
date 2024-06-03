@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import co.iin.susiddhi.sushishaa_dhansaver.R
 import co.iin.susiddhi.sushishaa_dhansaver.database.ExpenseClassModel
 import co.iin.susiddhi.sushishaa_dhansaver.database.*
+import co.iin.susiddhi.sushishaa_dhansaver.ui.ExpenseCardViewListFragment
 
-class ExpenseCardViewListAdapter (private val context: Context, courseModelArrayList: ArrayList<ExpenseClassModel>) :
+class ExpenseCardViewListAdapter (private val context: Context, courseModelArrayList: ArrayList<ExpenseClassModel>,
+                                  private val onItemClick: (ExpenseClassModel) -> Unit) :
     RecyclerView.Adapter<ExpenseCardViewListAdapter.Viewholder>(){
 
     class Viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -81,13 +83,9 @@ class ExpenseCardViewListAdapter (private val context: Context, courseModelArray
         holder?.SubCategory?.setText(model.sub_category)
         holder?.Reason?.setText(model.purpose)
 
-        /*
-        holder?.ExpenseRupee?.setText("model.rupee")
-        holder?.DateTime?.setText("model.date")
-        holder?.Mode?.setText("model.mode")
-        holder?.Category?.setText("model.category")
-        holder?.SubCategory?.setText("model.sub_category")
-        holder?.Reason?.setText("model.purpose")*/
+        holder.itemView.setOnClickListener {
+            onItemClick(model)
+        }
 
     }
 
