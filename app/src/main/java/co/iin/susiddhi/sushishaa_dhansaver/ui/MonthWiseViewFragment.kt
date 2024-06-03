@@ -115,6 +115,7 @@ class MonthWiseViewFragment : Fragment() {
         for(day in 1..42)
         {
             var textView: TextView = requireView()?.findViewById(textViewRId[day-1])
+            context?.getColor(R.color.monthTextViewColor)?.let { textView?.setBackgroundColor(it) }
             textViewCalList.add(textView)
             textView.setOnClickListener {
                 val bundle = Bundle()

@@ -8,6 +8,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPlaceholder"
         android:layout_width="match_parent"
-        android:layout_height="600dp" />
+        android:layout_height="600dp"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="6dp"
+        android:scrollbars="vertical" />
 
 </FrameLayout>

@@ -83,7 +83,8 @@ class YearWiseViewFragment : Fragment() {
             textView?.setGravity(Gravity.CENTER_HORIZONTAL)
             textView.setTextSize(24f)
             textView.setTextColor(Color.BLACK)
-            textView?.setBackgroundColor(Color.parseColor("#FFA1CCF3"))
+            //textView?.setBackgroundColor(Color.parseColor("#FFA1CCF3"))
+            context?.getColor(R.color.yearTextViewColor)?.let { textView?.setBackgroundColor(it) }
 
             textView.setOnClickListener {
                 val bundle = Bundle()

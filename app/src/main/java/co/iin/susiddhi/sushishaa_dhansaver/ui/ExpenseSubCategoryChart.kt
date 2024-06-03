@@ -2,6 +2,7 @@ package co.iin.susiddhi.sushishaa_dhansaver.ui
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,11 +20,15 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
+import java.time.Year
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
@@ -73,16 +78,51 @@ class ExpenseSubCategoryChart : Fragment() {
         val bundle = this.arguments
         var categoryRecvd = ""
         var categoryRecvdDate = ""
+        var categoryRecvdTotalExpense = ""
         if (bundle != null) {
             // handle your code here.
             categoryRecvd = bundle.getString("PiChartCategory").toString()
             categoryRecvdDate = bundle.getString("PiChartCategoryDate").toString()
+            categoryRecvdTotalExpense = bundle.getString("PiChartCategoryTotalRupee").toString()
         }
         Log.e("TAG", "GET : $categoryRecvd")
-        fillPiChartDetails(categoryRecvd, categoryRecvdDate)
+        fillPiChartDetails(categoryRecvd, categoryRecvdDate, categoryRecvdTotalExpense)
+
+        pieChart.setOnChartValueSelectedListener(object :
+            OnChartValueSelectedListener {
+            override fun onNothingSelected() {
+                Log.e("Entry selected", "Nothing selected.")
+            }
+
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                val calender = Calendar.getInstance()
+                var month_number_format = SimpleDateFormat("MM")
+                var month_number = month_number_format.format(calender.time).toString().toInt()
+                var year = Year.now().toString().toInt()
+                val bundle = Bundle()
+                bundle.putString("YearFragmentMonthYear", "${month_number},$year,$categoryRecvd, $categoryRecvdTotalExpense") // Put anything what you want
+                bundle.putString("piChartViewCallerFrag", ExpenseSubCategoryChart.toString())
+                var fragment = ExpenseCardViewListFragment()
+                fragment.arguments = bundle
+                activity?.run {
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.main_fragment_section_mainactivity,
+                        fragment
+                    )
+                        .addToBackStack(ExpenseCardViewListFragment.toString())
+                        .commit()
+                }
+
+            }
+        })
+
     }
 
-    private fun fillPiChartDetails(categoryRecvd: String, categoryRecvdDate: String) {
+    private fun fillPiChartDetails(
+        categoryRecvd: String,
+        categoryRecvdDate: String,
+        categoryRecvdTotalExpense: String
+    ) {
         if (pieChart != null) {
             pieChart.setUsePercentValues(true)
             pieChart.getDescription().setEnabled(false)
@@ -113,7 +153,7 @@ class ExpenseSubCategoryChart : Fragment() {
             }
             else
             {
-                pieChart.centerText = categoryRecvd.split("=")[0]
+                pieChart.centerText = categoryRecvd.split("=")[0]+"\n("+categoryRecvdTotalExpense+")"
             }
             pieChart.setCenterTextSize(20f)
 
@@ -133,7 +173,7 @@ class ExpenseSubCategoryChart : Fragment() {
             pieChart.setEntryLabelColor(Color.WHITE)
             pieChart.setEntryLabelTextSize(12f)
             pieChart.legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER)
-            pieChart.legend.setTextSize(20f)
+            pieChart.legend.setTextSize(14f)
             pieChart.legend.setForm(Legend.LegendForm.CIRCLE)
             pieChart.legend.setWordWrapEnabled(true)
             // on below line we are creating array list and
@@ -208,7 +248,7 @@ class ExpenseSubCategoryChart : Fragment() {
             val rnd = Random()
             var color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
             entry.formColor = color
-            entry.label = map.key + "(${categoryFloat.roundToInt()})"
+            entry.label = map.key + "(${map.value}, ${categoryFloat.roundToInt()}%)"
             entriesLegend.add(entry)
             // add a lot of colors to list
             colors.add(color)

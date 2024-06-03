@@ -68,7 +68,7 @@ class ExpenseChartFragment : Fragment() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "SuSiShaa- Dhan Saver"
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = context?.getString(R.string.app_name)
         return view
     }
 
@@ -143,14 +143,17 @@ class ExpenseChartFragment : Fragment() {
                 //val label: String = pieEntry.label
                 Log.e("Entry selected", e.toString())
                 var selectedCategory = ""
+                var selectedCategoryDebit = ""
                 if (e != null && h != null) {
                     Log.e("CHART CLICK DATA:", "e.y:${e.getY()} h.x:${h.x} h.dataIndex:${h.dataIndex}")
-                    selectedCategory = globalCategoryList[h.x.toInt()]
+                    selectedCategory = globalCategoryList[h.x.toInt()]?.split("#")[0]
+                    selectedCategoryDebit = globalCategoryList[h.x.toInt()]?.split("#")[1]
                     Log.w("CATEGORY:", "GET CLICKED CATEGORY: ${selectedCategory}")
                 }
                 val bundle = Bundle()
                 bundle.putString("PiChartCategory", selectedCategory) // Put anything what you want
                 bundle.putString("PiChartCategoryDate", "${month_number},$year") // Put anything what you want
+                bundle.putString("PiChartCategoryTotalRupee", selectedCategoryDebit) // Put anything what you want
                 var fragment = ExpenseSubCategoryChart()
                 fragment.arguments = bundle
                 activity?.run {
@@ -228,7 +231,7 @@ class ExpenseChartFragment : Fragment() {
             pieChart.setEntryLabelColor(Color.WHITE)
             pieChart.setEntryLabelTextSize(12f)
             pieChart.legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER)
-            pieChart.legend.setTextSize(20f)
+            pieChart.legend.setTextSize(14f)
             pieChart.legend.setForm(Legend.LegendForm.CIRCLE)
             pieChart.legend.setWordWrapEnabled(true)
             // on below line we are creating array list and
@@ -278,7 +281,7 @@ class ExpenseChartFragment : Fragment() {
             textViewMoneyDebits.text = "-${calcData.totalDebit.toString()}"
             textViewMoneyLeft.text = "= ${(calcData.totalCredit - calcData.totalDebit).toString()}"
             for (catgory in calcData.categoryExpenseDataMap) {
-                globalCategoryList.add(catgory.toString())
+                globalCategoryList.add(catgory.toString()+"#${catgory.value}")
                 Log.i("TAG", "(${catgory.value}/${calcData.totalDebit})*100")
                 var categoryFloat = (catgory.value.toFloat() / calcData.totalDebit.toFloat()) * 100
                 Log.i("TAG", "${catgory.key}: $categoryFloat")
@@ -287,7 +290,7 @@ class ExpenseChartFragment : Fragment() {
                 val rnd = Random()
                 var color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
                 entry.formColor = color
-                entry.label = catgory.key + "(${categoryFloat.roundToInt()})"
+                entry.label = catgory.key + "(${catgory.value}, ${categoryFloat.roundToInt()}%)"
                 entriesLegend.add(entry)
                 // add a lot of colors to list
                 colors.add(color)

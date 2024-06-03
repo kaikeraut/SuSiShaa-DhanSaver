@@ -150,6 +150,8 @@ class SummaryReportFragment : Fragment() {
             var yearTotalInvestmentPercent = 0.0
             var yearTotalSavingPercent = 0.0
             var yearTotalInvestment = 0
+            var totalEssential = 0
+            var totalNonEssential = 0
             var mon_num = monthNameList.indexOf(monthSelected)
             var db = context?.let { it1 -> DataBaseHandler(it1) }
             if(checkBoxMonth.isChecked)
@@ -162,6 +164,14 @@ class SummaryReportFragment : Fragment() {
                 {
                     var hasMapCategory:HashMap<String, Int> = HashMap()
                     for(data in dbData) {
+                        if(data.essential == EXPENSE_ESSENTIALS)
+                        {
+                            totalEssential += data.rupee
+                        }
+                        else
+                        {
+                            totalNonEssential += data.rupee
+                        }
                         if(data.rupee > monthMaxExpenseSpent && data.category != SUSISHAA_CATEGORY_INCOME){
                             monthMaxExpenseSpent = data.rupee
                             monthMaxExpenseDay = data.date.split("/")[0].toString()
@@ -209,7 +219,8 @@ class SummaryReportFragment : Fragment() {
                         "\nThis Month Total Rs.$monthMaxExpenseCategory spent on $monthMaxCategoryName Category." +
                         "\nAverage you spent Rs.$monthAvgExpense per day this month."+
                         "\n-----------------------------"+
-                        "\nTotal Income: $monthTotalIncome\nTotal Expense:$monthTotalExpnse\nTotal Save: $monthTotalSave\nTotal Investment: $monthTotalInvestment"
+                        "\nTotal Income:Rs.$monthTotalIncome\nTotal Expense:Rs.$monthTotalExpnse\nTotal Save:Rs.$monthTotalSave\nTotal Investment:Rs.$monthTotalInvestment"+
+                        "\nEssentials: Rs.$totalEssential,\nNon-Essentials: Rs.$totalNonEssential"
 
                 checkBoxMonth.error = null
                 checkBoxYear.error = null
@@ -222,6 +233,14 @@ class SummaryReportFragment : Fragment() {
                 var hasMapMonth:HashMap<Int, Int> = HashMap()
                 Log.i("YearReport", "year:${yearSelected}: DataRead Size: ${dbData?.size}")
                 for(data in dbData!!) {
+                    if(data.essential == EXPENSE_ESSENTIALS)
+                    {
+                        totalEssential += data.rupee
+                    }
+                    else
+                    {
+                        totalNonEssential += data.rupee
+                    }
                     if(data.category != SUSISHAA_CATEGORY_INCOME) {
                         if (hasMapMonth.containsKey(data.month)) {
                             hasMapMonth[data.month] = hasMapMonth[data.month]?.plus(data.rupee)!!
@@ -289,9 +308,10 @@ class SummaryReportFragment : Fragment() {
                         "\nMaximum Rs.$yearMaxExpenseSpent on $yearMaxExpenseMonth Month"+
                         "\nThis Year total Rs.$yearMaxExpenseCategory spent on $yearMaxCategoryName" +
                         "\nAverage you spent Rs.$yearAvgExpense per month this year"+
-                        "\nTotal Income: $yearTotalIncome \nTotal Expense:$yearTotalExpnse (${roundTheNumber(yearTotalExpnsePercent)} %)" +
-                        "\nTotal Investment:$yearTotalInvestment (${roundTheNumber(yearTotalInvestmentPercent)} %)" +
-                        "\nTotal Savings:$yearTotalSaving (${roundTheNumber(yearTotalSavingPercent)} %)"
+                        "\nTotal Income:Rs.$yearTotalIncome \nTotal Expense:Rs.$yearTotalExpnse (${roundTheNumber(yearTotalExpnsePercent)} %)" +
+                        "\nTotal Investment:Rs.$yearTotalInvestment (${roundTheNumber(yearTotalInvestmentPercent)} %)" +
+                        "\nTotal Savings:Rs.$yearTotalSaving (${roundTheNumber(yearTotalSavingPercent)} %)"+
+                        "\nEssentials: Rs.$totalEssential,\nNon-Essentials: Rs.$totalNonEssential"
 
                 checkBoxMonth.error = null
                 checkBoxYear.error = null

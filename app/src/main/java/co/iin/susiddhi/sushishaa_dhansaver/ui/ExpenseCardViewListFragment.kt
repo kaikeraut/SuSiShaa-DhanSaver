@@ -28,7 +28,7 @@ class ExpenseCardViewListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    var callerFunction = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -53,7 +53,8 @@ class ExpenseCardViewListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        var courseModelArrayList: ArrayList<ExpenseClassModel> = ArrayList()
+        val db = context?.let { DataBaseHandler(it) }
         val bundle = this.arguments
         var recvdDay  = 0
         var recvdMonth  = 0
@@ -63,6 +64,7 @@ class ExpenseCardViewListFragment : Fragment() {
             // handle your code here.
             var recvd:String = ""
             recvd = bundle.getString("YearFragmentMonthYear").toString()
+            callerFunction = bundle.getString("piChartViewCallerFrag").toString()
             Log.e("YearFragmentMonthYear", "recvd $recvd")
             if(recvd != null) {
                 var list = recvd.split(",")
@@ -70,6 +72,7 @@ class ExpenseCardViewListFragment : Fragment() {
                     recvdMonth = list[0].toString().toInt()
                     recvdYear = list[1].toString().toInt()
                     Log.w("YearFragmentMonthYear", "Month:$recvdMonth, Year: $recvdYear")
+                    courseModelArrayList = db?.readExpenseData(FILTER_MONTHWISE, recvdMonth, recvdYear) as ArrayList<ExpenseClassModel>
                 }
                 else if(list.size == 3)
                 {
@@ -79,16 +82,26 @@ class ExpenseCardViewListFragment : Fragment() {
                     recvdYear = list[2].toString().toInt()
                     Log.w("MonthFragmentMonthYear", "Day:$dayStr, Month:$recvdMonth, Year: $recvdYear")
                     dailyView = true
+                    courseModelArrayList = db?.readExpenseData(FILTER_MONTHWISE, recvdMonth, recvdYear) as ArrayList<ExpenseClassModel>
+                }
+                else if(list.size == 4)
+                {
+                    //"${month_number},$year,$categoryRecvd, $categoryRecvdTotalExpense"
+                    recvdMonth = list[0].toString().toInt()
+                    recvdYear = list[1].toString().toInt()
+                    var category = list[2].split("=")[0]
+                    Log.w("CategoryView", "Month:$recvdMonth, Year: $recvdYear Category:$category")
+                    dailyView = false
+                    courseModelArrayList = db?.readMonthCategoryBasedData(FILTER_MONTHWISE, recvdMonth, recvdYear, category) as ArrayList<ExpenseClassModel>
                 }
             }
         }
 
         //val courseRV = requireView()?.findViewById(R.id.recyclerViewPlaceholder)
         val recycleView = view.findViewById<RecyclerView>(R.id.recyclerViewPlaceholder)
-        val db = context?.let { DataBaseHandler(it) }
+
         // Here, we have created new array list and added data to it
-        val courseModelArrayList: ArrayList<ExpenseClassModel> = db?.readExpenseData(
-            FILTER_MONTHWISE, recvdMonth, recvdYear) as ArrayList<ExpenseClassModel>
+
 
         // below line is for setting a layout manager for our recycler view.
         // here we are creating vertical list so we will provide orientation as vertical
@@ -126,15 +139,30 @@ class ExpenseCardViewListFragment : Fragment() {
              var courseAdapter = context?.let { ExpenseCardViewListAdapter(it, courseModelArrayList) }
             recycleView.adapter = courseAdapter
         }
+        if(callerFunction == ExpenseSubCategoryChart.toString())
+        {
+            (requireActivity() as AppCompatActivity).supportActionBar?.title = "SubCategory View"
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // handle arrow click here
         if (item.getItemId() === android.R.id.home) {
-            activity?.run {
-                supportFragmentManager.beginTransaction().replace(R.id.main_fragment_section_mainactivity, MonthWiseViewFragment())
-                    //.addToBackStack(ExpenseChartFragment().toString())
-                    .commit()
+            if(callerFunction == ExpenseSubCategoryChart.toString())
+            {
+                activity?.run {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_section_mainactivity, ExpenseChartFragment())
+                        //.addToBackStack(ExpenseChartFragment().toString())
+                        .commit()
+                }
+            }else {
+                activity?.run {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_section_mainactivity, MonthWiseViewFragment())
+                        //.addToBackStack(ExpenseChartFragment().toString())
+                        .commit()
+                }
             }
         }
         return super.onOptionsItemSelected(item)

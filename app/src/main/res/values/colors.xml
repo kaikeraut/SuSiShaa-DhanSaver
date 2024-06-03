@@ -14,4 +14,7 @@
     <color name="creditColorTexts">#D6F4D6</color>
     <color name="buttonStrokeColor">#015DAD</color>
     <color name="buttonTextColor">#030E55</color>
+
+    <color name="monthTextViewColor">#4B93BF</color>
+    <color name="yearTextViewColor">#4B93BF</color>
 </resources>
