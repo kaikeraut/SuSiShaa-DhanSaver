@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.ui
+package co.iin.susiddhi.susishaa_dhansaver.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.*
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.database.*
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern

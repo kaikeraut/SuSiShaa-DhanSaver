@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.adapter
+package co.iin.susiddhi.susishaa_dhansaver.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.ExpenseClassModel
-import co.iin.susiddhi.sushishaa_dhansaver.database.*
-import co.iin.susiddhi.sushishaa_dhansaver.ui.ExpenseCardViewListFragment
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.database.ExpenseClassModel
+import co.iin.susiddhi.susishaa_dhansaver.database.*
+import co.iin.susiddhi.susishaa_dhansaver.ui.ExpenseCardViewListFragment
 
 class ExpenseCardViewListAdapter (private val context: Context, courseModelArrayList: ArrayList<ExpenseClassModel>,
                                   private val onItemClick: (ExpenseClassModel) -> Unit) :

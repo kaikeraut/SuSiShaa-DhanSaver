@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.database
+package co.iin.susiddhi.susishaa_dhansaver.database
 
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.PieEntry

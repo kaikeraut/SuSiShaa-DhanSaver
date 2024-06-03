@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.setting.ui
+package co.iin.susiddhi.susishaa_dhansaver.setting.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.DataBaseHandler
-import co.iin.susiddhi.sushishaa_dhansaver.database.ExpenseClassModel
-import co.iin.susiddhi.sushishaa_dhansaver.setting.SettingsFragment
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.database.DataBaseHandler
+import co.iin.susiddhi.susishaa_dhansaver.database.ExpenseClassModel
+import co.iin.susiddhi.susishaa_dhansaver.setting.SettingsFragment
 import java.io.InputStream
 import kotlin.math.log
 

@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.setting
+package co.iin.susiddhi.susishaa_dhansaver.setting
 
 import android.os.Bundle
 import android.util.Log
@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.*
-import co.iin.susiddhi.sushishaa_dhansaver.ui.ExpenseChartFragment
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.database.*
+import co.iin.susiddhi.susishaa_dhansaver.ui.ExpenseChartFragment
 import java.time.Year
 import kotlin.math.roundToInt
 

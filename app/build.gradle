@@ -7,7 +7,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "co.iin.susiddhi.sushishaa_dhansaver"
+        applicationId "co.iin.susiddhi.susishaa_dhansaver"
         minSdk 29
         targetSdk 31
         versionCode 1

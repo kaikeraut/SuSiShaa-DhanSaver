@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.setting.ui
+package co.iin.susiddhi.susishaa_dhansaver.setting.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import co.iin.susiddhi.sushishaa_dhansaver.MainActivity
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.setting.SettingsFragment
+import co.iin.susiddhi.susishaa_dhansaver.MainActivity
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.setting.SettingsFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

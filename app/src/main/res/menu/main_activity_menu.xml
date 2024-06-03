@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="co.iin.susiddhi.sushishaa_dhansaver.MainActivity">
+    tools:context="co.iin.susiddhi.susishaa_dhansaver.MainActivity">
     <item
         android:id="@+id/menu_summary"
         android:icon="@drawable/ic_action_summary"

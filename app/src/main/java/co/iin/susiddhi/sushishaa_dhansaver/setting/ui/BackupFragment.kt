@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.setting.ui
+package co.iin.susiddhi.susishaa_dhansaver.setting.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -16,9 +16,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.database.DataBaseHandler
-import co.iin.susiddhi.sushishaa_dhansaver.setting.SettingsFragment
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.database.DataBaseHandler
+import co.iin.susiddhi.susishaa_dhansaver.setting.SettingsFragment
 import java.io.File
 import java.util.*
 

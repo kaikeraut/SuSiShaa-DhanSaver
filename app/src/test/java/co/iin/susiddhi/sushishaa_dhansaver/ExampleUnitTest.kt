@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver
+package co.iin.susiddhi.susishaa_dhansaver
 
 import org.junit.Test
 

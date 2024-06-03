@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.setting
+package co.iin.susiddhi.susishaa_dhansaver.setting
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,14 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import co.iin.susiddhi.sushishaa_dhansaver.MainActivity
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.AddCategoryFragment
-import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.AboutUsFragment
-import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.AddSubCategoryFragment
-import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.BackupFragment
-import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.ExportFragment
-import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.ImportFragment
+import co.iin.susiddhi.susishaa_dhansaver.MainActivity
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.setting.ui.AddCategoryFragment
+import co.iin.susiddhi.susishaa_dhansaver.setting.ui.AboutUsFragment
+import co.iin.susiddhi.susishaa_dhansaver.setting.ui.AddSubCategoryFragment
+import co.iin.susiddhi.susishaa_dhansaver.setting.ui.BackupFragment
+import co.iin.susiddhi.susishaa_dhansaver.setting.ui.ExportFragment
+import co.iin.susiddhi.susishaa_dhansaver.setting.ui.ImportFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

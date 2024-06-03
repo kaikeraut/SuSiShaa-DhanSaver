@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.ui
+package co.iin.susiddhi.susishaa_dhansaver.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -14,9 +14,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import co.iin.susiddhi.sushishaa_dhansaver.R
-import co.iin.susiddhi.sushishaa_dhansaver.adapter.ExpenseCardViewListAdapter
-import co.iin.susiddhi.sushishaa_dhansaver.database.*
+import co.iin.susiddhi.susishaa_dhansaver.R
+import co.iin.susiddhi.susishaa_dhansaver.adapter.ExpenseCardViewListAdapter
+import co.iin.susiddhi.susishaa_dhansaver.database.*
 import java.util.Arrays.toString
 
 // TODO: Rename parameter arguments, choose names that match

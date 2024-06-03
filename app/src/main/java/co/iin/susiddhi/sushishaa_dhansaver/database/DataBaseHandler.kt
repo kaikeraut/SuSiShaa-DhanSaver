@@ -1,4 +1,4 @@
-package co.iin.susiddhi.sushishaa_dhansaver.database
+package co.iin.susiddhi.susishaa_dhansaver.database
 
 import android.content.ContentValues
 import android.content.Context
