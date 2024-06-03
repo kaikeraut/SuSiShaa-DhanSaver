@@ -237,7 +237,7 @@ class MonthWiseViewFragment : Fragment() {
                         }
                     }
                     val html = ("<font color=" + Color.BLACK
-                            + ">${date} </font><br/><br/><font color="
+                            + "><b>${date}</b> </font><br/><br/><font color="
                             + Color.BLACK + ">${rupee}</font>")
                     day?.text = Html.fromHtml(html)
 

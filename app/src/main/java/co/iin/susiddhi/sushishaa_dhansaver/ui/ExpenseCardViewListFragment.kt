@@ -165,6 +165,10 @@ class ExpenseCardViewListFragment : Fragment() {
 
     fun onListItemClick(item:ExpenseClassModel){
         //Toast.makeText(context, "Clicked $item", Toast.LENGTH_SHORT).show()
+        if(item.date.length == 0 && item.category.length == 0)
+        {
+            return
+        }
         val bundle = Bundle()
         bundle.putString("AddExpenseEditDeleteRequest", "${item.id}~${item.date}}~${item.rupee}~${item.mode}~${item.category}~${item.sub_category}~${item.purpose}~${item.user}~${item.month}~${item.year}~${item.essential}") // Put anything what you want
         var fragment = EditExpenseFragment()
