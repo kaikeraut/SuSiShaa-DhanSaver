@@ -11,6 +11,44 @@
         android:orientation="vertical"
         android:padding="5dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/black"
+            android:orientation="horizontal"
+            android:padding="1dp">
+
+            <TextView
+                android:id="@+id/textViewExpenseToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:padding="5dp"
+                android:text="Expense"
+                android:textSize="20sp" />
+
+            <Switch
+                android:id="@+id/switchExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@color/white"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/textViewIncomeToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:padding="5dp"
+                android:text="Income"
+                android:textAlignment="textEnd"
+                android:textSize="20sp" />
+        </LinearLayout>
+
         <EditText
             android:id="@+id/editTextExpenseDay"
             android:layout_width="match_parent"

@@ -1,5 +1,7 @@
 package co.iin.susiddhi.susishaa_dhansaver.ui
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
@@ -64,6 +66,30 @@ class AddExpenseFragment : Fragment() {
 
         var essentialChkButton: CheckBox = requireView()?.findViewById(R.id.checkBoxEssentials)
         var nonEssentialChkButton: CheckBox = requireView()?.findViewById(R.id.checkBoxNonEssentials)
+        var textViewExpenseToggle: TextView = requireView()?.findViewById(R.id.textViewExpenseToggle)
+        var textViewIncomeToggle: TextView = requireView()?.findViewById(R.id.textViewIncomeToggle)
+        var switchExpense: Switch = requireView()?.findViewById(R.id.switchExpense)
+
+        var isIncomeActive = false
+        if(switchExpense.isChecked)
+        {
+            textViewExpenseToggle.setTypeface(Typeface.DEFAULT)
+            textViewIncomeToggle.setTypeface(Typeface.DEFAULT_BOLD)
+            context?.getColor(R.color.gray)?.let { textViewExpenseToggle?.setTextColor(it) }
+            context?.getColor(R.color.creditColor)?.let { textViewIncomeToggle?.setTextColor(it) }
+            context?.getColor(R.color.creditColor)?.let { editTextExpenseRupee?.setBackgroundColor(it) }
+            isIncomeActive = true
+        }
+        else
+        {
+            textViewIncomeToggle.setTypeface(Typeface.DEFAULT)
+            textViewExpenseToggle.setTypeface(Typeface.DEFAULT_BOLD)
+            context?.getColor(R.color.debitColor)?.let { textViewExpenseToggle?.setTextColor(it) }
+            context?.getColor(R.color.gray)?.let { textViewIncomeToggle?.setTextColor(it) }
+            //context?.getColor(R.color.debitColorText)?.let { editTextExpenseRupee?.setTextColor(it) }
+            context?.getColor(R.color.debitColor)?.let { editTextExpenseRupee?.setHintTextColor(it) }
+            isIncomeActive = false
+        }
 
         essentialChkButton.setOnClickListener {
             if(essentialChkButton.isChecked)
@@ -150,7 +176,33 @@ class AddExpenseFragment : Fragment() {
                 // write code to perform some action
             }
         }
-        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm")
+        switchExpense.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked)
+            {
+                textViewExpenseToggle.setTypeface(Typeface.DEFAULT)
+                textViewIncomeToggle.setTypeface(Typeface.DEFAULT_BOLD)
+                context?.getColor(R.color.gray)?.let { textViewExpenseToggle?.setTextColor(it) }
+                context?.getColor(R.color.creditColor)?.let { textViewIncomeToggle?.setTextColor(it) }
+                context?.getColor(R.color.creditColor)?.let { editTextExpenseRupee?.setHintTextColor(it) }
+
+                spinnerCategory.setSelection(CategoryList.indexOf(SUSISHAA_CATEGORY_INCOME))
+                isIncomeActive = true
+            }
+            else
+            {
+                textViewIncomeToggle.setTypeface(Typeface.DEFAULT)
+                textViewExpenseToggle.setTypeface(Typeface.DEFAULT_BOLD)
+                context?.getColor(R.color.debitColor)?.let { textViewExpenseToggle?.setTextColor(it) }
+                context?.getColor(R.color.gray)?.let { textViewIncomeToggle?.setTextColor(it) }
+                context?.getColor(R.color.debitColor)?.let { editTextExpenseRupee?.setHintTextColor(it) }
+
+                spinnerCategory.setSelection(CategoryList.indexOf(SUSISHAA_CATEGORY_MAINTENANCE))
+                isIncomeActive = false
+            }
+        }
+
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
         var currentDateTime = sdf.format(Date())
         var todayDate = currentDateTime.split(" ")[0]
         editTextExpenseDay.setText(todayDate)
@@ -229,13 +281,15 @@ class AddExpenseFragment : Fragment() {
                 editTextExpenseTime.setError("DD/MM/YYYY")
                 allGood = false
             }
-            if(editTextExpenseRupee.length() == 0) {
-                allGood = true
-                editTextExpenseRupee.setError("Enter Money")
+            Log.w("EditTextRupee", "Rupee: ${editTextExpenseRupee.text}, len: ${editTextExpenseRupee.text.length}, empty: ${editTextExpenseRupee.text.isEmpty()}")
+            if(editTextExpenseRupee.text.isEmpty()) {
+                allGood = false
+                editTextExpenseRupee.error = "Enter Money"
             }
             if(editTextExpenseReason.length() == 0) {
-                allGood = false
-                editTextExpenseReason.setError("Enter Reason")
+                //Reason field not mandatory
+                //allGood = false
+                //editTextExpenseReason.setError("Enter Reason")
             }
             var checkedBox = 0
             if(essentialChkButton.isChecked)
@@ -249,7 +303,7 @@ class AddExpenseFragment : Fragment() {
                 essentialChkButton.setError(null)
                 nonEssentialChkButton.setError(null)
             }
-            if(checkedBox == 0)
+            if((checkedBox == 0) && !isIncomeActive)
             {
                 allGood = false
                 essentialChkButton.setError("")
@@ -274,6 +328,15 @@ class AddExpenseFragment : Fragment() {
                     "Vineet", month,year, checkedBox))
                 if(!ret.equals(0))
                 {
+                    var toastMsg = ""
+                    if(isIncomeActive)
+                    {
+                        toastMsg = "Income Added: Rs.${editTextExpenseRupee.text}"
+                    }
+                    else
+                    {
+                        toastMsg = "Expense Added: Rs.${editTextExpenseRupee.text}"
+                    }
                     val currentDateTime = sdf.format(Date())
                     var todayDate = currentDateTime.split(" ")[0]
                     editTextExpenseDay.setText(todayDate)
@@ -284,7 +347,7 @@ class AddExpenseFragment : Fragment() {
                     nonEssentialChkButton.isChecked = false
                     essentialChkButton.isEnabled = true
                     nonEssentialChkButton.isEnabled = true
-                    Toast.makeText(context, "Expense Added", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -73,6 +73,7 @@ class EditExpenseFragment : Fragment() {
 
         val bundle = this.arguments
         var recvdData = bundle?.getString("AddExpenseEditDeleteRequest").toString()
+        Log.i("RECVDDATA", "recvdData: ${recvdData}")
         var col = recvdData.split("~")
         var model = ExpenseClassModel(
             col[0].toInt(),
@@ -87,6 +88,7 @@ class EditExpenseFragment : Fragment() {
             col[9].toInt(),
             col[10].toInt()
         )
+        Log.i("Date:", "Date: ${col[1]} --- ${model.date}")
         editTextExpenseDay.setText(model.date.split(" ")[0]);
         editTextExpenseTime.setText(model.date.split(" ")[1])
         editTextExpenseRupee.setText(model.rupee.toString())
@@ -214,8 +216,8 @@ class EditExpenseFragment : Fragment() {
         val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm")
         var currentDateTime = sdf.format(Date())
         var todayDate = currentDateTime.split(" ")[0]
-        editTextExpenseDay.setText(todayDate)
-        editTextExpenseTime.setText(currentDateTime.split(" ")[1])
+        //editTextExpenseDay.setText(todayDate)
+        //editTextExpenseTime.setText(currentDateTime.split(" ")[1])
 
         editTextExpenseDay.setOnKeyListener { v, keyCode, event -> //You can identify which key pressed by checking keyCode value with KeyEvent.KEYCODE_
             Log.e(

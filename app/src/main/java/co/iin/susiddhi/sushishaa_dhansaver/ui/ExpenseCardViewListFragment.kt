@@ -170,7 +170,7 @@ class ExpenseCardViewListFragment : Fragment() {
             return
         }
         val bundle = Bundle()
-        bundle.putString("AddExpenseEditDeleteRequest", "${item.id}~${item.date}}~${item.rupee}~${item.mode}~${item.category}~${item.sub_category}~${item.purpose}~${item.user}~${item.month}~${item.year}~${item.essential}") // Put anything what you want
+        bundle.putString("AddExpenseEditDeleteRequest", "${item.id}~${item.date}~${item.rupee}~${item.mode}~${item.category}~${item.sub_category}~${item.purpose}~${item.user}~${item.month}~${item.year}~${item.essential}") // Put anything what you want
         var fragment = EditExpenseFragment()
         fragment.arguments = bundle
         activity?.run {
