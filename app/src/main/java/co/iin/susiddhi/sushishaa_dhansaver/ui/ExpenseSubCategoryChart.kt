@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import co.iin.susiddhi.susishaa_dhansaver.R
@@ -57,7 +60,7 @@ class ExpenseSubCategoryChart : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
+    var globalTotalCategoryDebit = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,10 +73,11 @@ class ExpenseSubCategoryChart : Fragment() {
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Sub Category Details"
         return view
     }
-
+    var firstCallDone = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pieChart = requireView()?.findViewById(R.id.pieChart)
+        var spinnerCategory: Spinner = requireView()?.findViewById(R.id.spinnerCategory)
 
         val bundle = this.arguments
         var categoryRecvd = ""
@@ -85,7 +89,45 @@ class ExpenseSubCategoryChart : Fragment() {
             categoryRecvdDate = bundle.getString("PiChartCategoryDate").toString()
             categoryRecvdTotalExpense = bundle.getString("PiChartCategoryTotalRupee").toString()
         }
-        Log.e("TAG", "GET : $categoryRecvd")
+
+        var db = context?.let { it1 -> DataBaseHandler(it1) }
+        val categoryClassList = db?.readCategoryTable() as ArrayList
+        val CategoryList: ArrayList<String> = ArrayList()
+        val SubCategoryList: ArrayList<String> = ArrayList()
+        val ModeList:List<String> = db?.getModeList()
+
+        for (i in 0 until categoryClassList.size) {
+            CategoryList.add(categoryClassList[i].category)
+            SubCategoryList.add(categoryClassList[i].sub_category)
+        }
+
+        var finalCategorySelected = ""
+
+        val CategoryAdapter =
+            context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, CategoryList) }
+        spinnerCategory.adapter = CategoryAdapter
+
+        spinnerCategory.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View, position: Int, id: Long) {
+                finalCategorySelected = CategoryList[position]
+                if(firstCallDone){
+                    categoryRecvd = "$finalCategorySelected=0"
+                    fillPiChartDetails(categoryRecvd, categoryRecvdDate, "")
+                    categoryRecvd = "$finalCategorySelected=${globalTotalCategoryDebit}"
+                    categoryRecvdTotalExpense = globalTotalCategoryDebit.toString()
+                }
+                Log.e("TAG", "finalCategorySelected GET : $finalCategorySelected")
+                firstCallDone = true
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
+        Log.e("TAG", "FINAL GET : $categoryRecvd")
         fillPiChartDetails(categoryRecvd, categoryRecvdDate, categoryRecvdTotalExpense)
 
         pieChart.setOnChartValueSelectedListener(object :
@@ -153,7 +195,13 @@ class ExpenseSubCategoryChart : Fragment() {
             }
             else
             {
-                pieChart.centerText = categoryRecvd.split("=")[0]+"\n("+categoryRecvdTotalExpense+")"
+                if(categoryRecvdTotalExpense.isEmpty())
+                {
+                    pieChart.centerText = categoryRecvd.split("=")[0]+"\n("+globalTotalCategoryDebit+")"
+                }
+                else{
+                    pieChart.centerText = categoryRecvd.split("=")[0]+"\n("+categoryRecvdTotalExpense+")"
+                }
             }
             pieChart.setCenterTextSize(20f)
 
@@ -210,7 +258,7 @@ class ExpenseSubCategoryChart : Fragment() {
     }
 
     private fun getSubCategoryDetailsfromDb(categoryRecvd: String, categoryRecvdDate: String): PiChartClassModel {
-
+        globalTotalCategoryDebit = 0
         val entriesData: ArrayList<PieEntry> = ArrayList()
         val colors: ArrayList<Int> = ArrayList()
         val entriesLegend: MutableList<LegendEntry> = ArrayList()
@@ -222,7 +270,7 @@ class ExpenseSubCategoryChart : Fragment() {
         var hashMap:HashMap<String,Int> = HashMap()
         var categoryTofind = categoryRecvd.split("=")[0]
         var categoryTotalDebit = categoryRecvd.split("=")[1].toInt()
-
+        Log.w("getSubCategoryDetailsfromDb", "getSubCategoryDetailsfromDb->categoryRecvd:${categoryRecvd},  categoryRecvdDate:${categoryRecvdDate}")
         if (calcData != null) {
             for (loop in calcData) {
                 if(loop.category == categoryTofind)
@@ -235,8 +283,14 @@ class ExpenseSubCategoryChart : Fragment() {
                     {
                         hashMap[loop.sub_category] = loop.rupee
                     }
+                    globalTotalCategoryDebit += loop.rupee
                 }
             }
+            Log.i("asdf",  "categoryTotalDebit:${categoryTotalDebit}, globalTotalCategoryDebit:${globalTotalCategoryDebit}")
+            if(categoryTotalDebit == 0) {
+                categoryTotalDebit = globalTotalCategoryDebit
+            }
+
         }
         for(map in hashMap)
         {
