@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.AddFixedExpenseFragment
+import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.ViewFixedExpenseFragment
 import co.iin.susiddhi.susishaa_dhansaver.MainActivity
 import co.iin.susiddhi.susishaa_dhansaver.R
 import co.iin.susiddhi.susishaa_dhansaver.setting.ui.AddCategoryFragment
@@ -63,6 +65,8 @@ class SettingsFragment : Fragment() {
         //var textViewExport: TextView = requireView()?.findViewById(R.id.textViewExport)
         var textViewImport: TextView = requireView()?.findViewById(R.id.textViewImport)
         var textViewBackup: TextView = requireView()?.findViewById(R.id.textViewBackupMail)
+        var textViewAddFixedExpense: TextView = requireView()?.findViewById(R.id.textViewAddFixedExpense)
+        var textViewViewFixedExpense: TextView = requireView()?.findViewById(R.id.textViewViewFixedExpense)
         var textViewAboutUs: TextView = requireView()?.findViewById(R.id.textViewAboutUs)
 
 
@@ -73,6 +77,8 @@ class SettingsFragment : Fragment() {
         textViewImport.setOnClickListener { replaceFragment(ImportFragment()) }
         textViewBackup.setOnClickListener { replaceFragment(BackupFragment()) }
         textViewAboutUs.setOnClickListener { replaceFragment(AboutUsFragment()) }
+        textViewAddFixedExpense.setOnClickListener{ replaceFragment(AddFixedExpenseFragment()) }
+        textViewViewFixedExpense.setOnClickListener{ replaceFragment(ViewFixedExpenseFragment()) }
     }
 
     fun replaceFragment(fragment: Fragment)
