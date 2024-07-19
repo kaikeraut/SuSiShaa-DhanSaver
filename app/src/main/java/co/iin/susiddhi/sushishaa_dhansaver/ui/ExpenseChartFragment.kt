@@ -99,24 +99,28 @@ class ExpenseChartFragment : Fragment() {
         var year = Year.now().toString().toInt()
         val calender = Calendar.getInstance()
         var month_number_format = SimpleDateFormat("MM")
-        var month_number = month_number_format.format(calender.time).toString().toInt()-1
+        var month_number = month_number_format.format(calender.time).toString().toInt()
         buttonMonthPrevious.setOnClickListener{
+            Log.w("PREV", "Curr Mon: ${month_number}")
             month_number -= 1
             if(month_number == -1)
             {
                 month_number = 11
                 year -= 1
             }
+            Log.w("PREV", "Change Mon: ${month_number}")
             buttonExpenseDate.text = "${month_number}, $year"
             updatePiChartView(month_number,year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
         }
         buttonMonthNext.setOnClickListener{
+            Log.w("PREV", "Curr Mon: ${month_number}")
             month_number += 1
             if(month_number == 12)
             {
                 month_number = 0
                 year += 1
             }
+            Log.w("PREV", "Change Mon: ${month_number}")
             buttonExpenseDate.text = "${month_number}, $year"
             updatePiChartView(month_number,year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
         }
@@ -127,7 +131,7 @@ class ExpenseChartFragment : Fragment() {
             calendar.time = Date()
             var currentMonth = calendar.get(Calendar.MONTH) + 1 //Jan starts from 0
             year = Year.now().toString().toInt()
-            month_number = currentMonth-1
+            month_number = currentMonth
             updatePiChartView(currentMonth, year, pieChart, textViewMoneyCredits, textViewMoneyDebits, textViewMoneyLeft)
         }
 

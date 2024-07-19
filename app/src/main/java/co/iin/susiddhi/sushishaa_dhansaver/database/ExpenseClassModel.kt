@@ -27,3 +27,8 @@ class PiChartClassModel(
     var colors: ArrayList<Int>
 )
 {}
+
+class FixedExpenseClassModel(var id:Int, var expense:Int, var occurrence:String,
+                            var sub_occurrence:String, var category: String,
+                            var sub_category: String, var enddate:String, var comments:String)
+{}

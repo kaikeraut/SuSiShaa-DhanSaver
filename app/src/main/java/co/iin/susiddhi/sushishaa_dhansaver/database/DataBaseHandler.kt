@@ -48,6 +48,15 @@ const val SUSISHAA_TABLENAME_EXPENSE_COL_NAME_YEAR = "YEAR"
 const val SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MONTH = "MONTH"
 const val SUSISHAA_TABLENAME_EXPENSE_COL_NAME_ESSENTIAL = "ESSENTIAL"
 
+const val SUSISHAA_TABLENAME_FIXED_EXPENSE = "SUSISHAA_FIXED_EXPENSE"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_EXPENSE = "EXPENSE"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_OCCURRENCE = "OCCURRENCE"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_SUB_OCCURRENCE = "SUB_OCCURRENCE"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_CATEGORY = "CATEGORY"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_SUBCATEGORY = "SUB_CATEGORY"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_END_DATE = "END_DATE"
+const val SUSISHAA_TABLENAME_FIXED_COL_NAME_COMMENTS = "COMMENTS"
+
 //Sub Category List
 
 val sub_category_maintenance = listOf("HOME", "CAR", "2_WHEELER")
@@ -78,7 +87,16 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
                 "$SUSISHAA_TABLENAME_EXPENSE_COL_NAME_CATEGORY VARCHAR(256), $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_SUB_CATEGORY VARCHAR(256)," +
                 "$SUSISHAA_TABLENAME_EXPENSE_COL_NAME_USER VARCHAR(256), $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MONTH VARCHAR(256)," +
                 "$SUSISHAA_TABLENAME_EXPENSE_COL_NAME_YEAR VARCHAR(256), $SUSISHAA_TABLENAME_EXPENSE_COL_NAME_ESSENTIAL INTEGER)"
+
+        SUSISHAA_TABLENAME_FIXED_EXPENSE
         db?.execSQL(createTableExpense)
+        //Create Fixed Expense Table
+        val createTableFixedExpense = "CREATE TABLE $SUSISHAA_TABLENAME_FIXED_EXPENSE ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "$SUSISHAA_TABLENAME_FIXED_COL_NAME_EXPENSE INTEGER, " +
+                "$SUSISHAA_TABLENAME_FIXED_COL_NAME_OCCURRENCE VARCHAR(256), $SUSISHAA_TABLENAME_FIXED_COL_NAME_SUB_OCCURRENCE VARCHAR(256), " +
+                "$SUSISHAA_TABLENAME_FIXED_COL_NAME_CATEGORY VARCHAR(256), $SUSISHAA_TABLENAME_FIXED_COL_NAME_SUBCATEGORY VARCHAR(256)," +
+                "$SUSISHAA_TABLENAME_FIXED_COL_NAME_END_DATE VARCHAR(256), $SUSISHAA_TABLENAME_FIXED_COL_NAME_COMMENTS VARCHAR(256))"
+        db?.execSQL(createTableFixedExpense)
         Log.e("TAG", "Expense and Category Table Created")
     }
 
@@ -437,4 +455,102 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
 
         return ExpenseChartCalulatedData(dailyWiseExpense, categoryBasedMap, totalCredit, totalDebit)
     }
+
+
+    fun insertNewFixedExpense(fixed: FixedExpenseClassModel): Long {
+        val database = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_EXPENSE, fixed.expense)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_OCCURRENCE, fixed.occurrence)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUB_OCCURRENCE, fixed.sub_occurrence)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_CATEGORY, fixed.category)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUBCATEGORY, fixed.sub_category)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_END_DATE, fixed.enddate)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_COMMENTS, fixed.comments)
+
+        Log.i("NEW-FIXED", "Fixed: rupee:${fixed.expense}~${fixed.occurrence}~${fixed.sub_occurrence}~${fixed.category}" +
+                "~${fixed.sub_category}~${fixed.enddate}~${fixed.comments}~")
+
+        val result = database.insert(SUSISHAA_TABLENAME_FIXED_EXPENSE, null, contentValues)
+        if (result == (0).toLong()) {
+            //Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            // Toast.makeText(context, "New Category $newCategory Added", Toast.LENGTH_SHORT).show()
+        }
+        database.close()
+        //readCategoryTable()
+        return result
+    }
+
+    fun updateFixedExpense(fixed: FixedExpenseClassModel):Int{
+        val database = this.writableDatabase
+        val contentValues = ContentValues()
+
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_EXPENSE, fixed.expense)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_OCCURRENCE, fixed.occurrence)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUB_OCCURRENCE, fixed.sub_occurrence)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_CATEGORY, fixed.category)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUBCATEGORY, fixed.sub_category)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_END_DATE, fixed.enddate)
+        contentValues.put(SUSISHAA_TABLENAME_FIXED_COL_NAME_COMMENTS, fixed.comments)
+
+        //contentValues.put(SUSISHAA_COL_NAME_CATEGORY, fixed.ex)
+        // Updating Row
+        Log.i("UPDATE-FIXED", "Fixed: rupee:${fixed.expense}~${fixed.occurrence}~${fixed.sub_occurrence}~${fixed.category}" +
+                "~${fixed.sub_category}~${fixed.enddate}~${fixed.comments}~")
+        val success = database.update(
+            SUSISHAA_TABLENAME_FIXED_EXPENSE, contentValues,
+            "$COL_ID='${fixed.id}'",null)
+        //2nd argument is String containing nullColumnHack
+        if (success == 0) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(context, "New Fixed Expense Added", Toast.LENGTH_SHORT).show()
+        }
+        database.close()
+        //readCategoryTable()
+        return success
+    }
+
+    fun deleteFixedExpenseData(fixed: FixedExpenseClassModel):Int{
+        val db = this.writableDatabase
+        // Deleting Row
+        val success = db.delete(SUSISHAA_TABLENAME_FIXED_EXPENSE,"id="+fixed.id,null)
+        //2nd argument is String containing nullColumnHack
+        db.close() // Closing database connection
+        return success
+    }
+
+    fun readFixedExpenseData(): MutableList<FixedExpenseClassModel> {
+        val expenseList: MutableList<FixedExpenseClassModel> = ArrayList()
+        val db = this.readableDatabase
+
+        val query = "Select * from $SUSISHAA_TABLENAME_FIXED_EXPENSE"
+        Log.i("READ_DB", "READ Query:$query")
+        val result = db.rawQuery(query, null)
+        if (result.moveToFirst()) {
+            do {
+
+                var id = result.getInt(result.getColumnIndexOrThrow(COL_ID))
+                val fixedExpenseRupee = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_EXPENSE))
+                val occurrence = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_OCCURRENCE))
+                val sub_occurrence = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUB_OCCURRENCE))
+                val category = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_CATEGORY))
+                val sub_category = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUBCATEGORY))
+                val end_date = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_END_DATE))
+                val comments = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_COMMENTS))
+                val fixedExpense = FixedExpenseClassModel(id, fixedExpenseRupee, occurrence, sub_occurrence, category, sub_category,
+                    end_date, comments)
+                expenseList.add(fixedExpense)
+                Log.i("FIXED_EXPENSE DB READ", "$id, $fixedExpenseRupee, $occurrence, $sub_occurrence, $category, $sub_category," +
+                        " $end_date, $comments")
+            }
+            while (result.moveToNext())
+        }
+        return expenseList
+    }//ReadExpenseData
+
+
 }
