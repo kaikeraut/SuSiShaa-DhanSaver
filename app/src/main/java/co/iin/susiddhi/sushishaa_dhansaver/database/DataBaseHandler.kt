@@ -504,10 +504,10 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
             "$COL_ID='${fixed.id}'",null)
         //2nd argument is String containing nullColumnHack
         if (success == 0) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+          //  Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
         }
         else {
-            Toast.makeText(context, "New Fixed Expense Added", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(context, "New Fixed Expense Added", Toast.LENGTH_SHORT).show()
         }
         database.close()
         //readCategoryTable()

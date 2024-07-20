@@ -192,17 +192,17 @@ class AddFixedExpenseFragment : Fragment() {
 
         var db = context?.let { it1 -> DataBaseHandler(it1) }
         val categoryClassList = db?.readCategoryTable() as ArrayList
-        val CategoryList: ArrayList<String> = ArrayList()
-        val SubCategoryList: ArrayList<String> = ArrayList()
+        val categoryList: ArrayList<String> = ArrayList()
+        val subCategoryList: ArrayList<String> = ArrayList()
 
         for (i in 0 until categoryClassList.size) {
-            CategoryList.add(categoryClassList[i].category)
-            SubCategoryList.add(categoryClassList[i].sub_category)
+            categoryList.add(categoryClassList[i].category)
+            subCategoryList.add(categoryClassList[i].sub_category)
         }
 
 
         val CategoryAdapter =
-            context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, CategoryList) }
+            context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, categoryList) }
         spinnerFixedCategory.adapter = CategoryAdapter
 
         var finalCategorySelected = ""
@@ -213,10 +213,10 @@ class AddFixedExpenseFragment : Fragment() {
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View, position: Int, id: Long) {
-                finalCategorySelected = CategoryList[position]
+                finalCategorySelected = categoryList[position]
                 finalCategorySelectedPosition = position
                 val subCategoryAdapter =
-                    context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, SubCategoryList[position].split(",")) }
+                    context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, subCategoryList[position].split(",")) }
                 spinnerFixedSubCategory.adapter = subCategoryAdapter
             }
 
@@ -229,7 +229,7 @@ class AddFixedExpenseFragment : Fragment() {
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View, position: Int, id: Long) {
-                finalSubCategorySelected = SubCategoryList[finalCategorySelectedPosition].split(",")[position]
+                finalSubCategorySelected = subCategoryList[finalCategorySelectedPosition].split(",")[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -263,7 +263,7 @@ class AddFixedExpenseFragment : Fragment() {
             }
             false
         }
-        spinnerFixedCategory.setSelection(CategoryList.indexOf(SUSISHAA_CATEGORY_INVESTMENT))
+        spinnerFixedCategory.setSelection(categoryList.indexOf(SUSISHAA_CATEGORY_INVESTMENT))
         buttonAddFixedExpense.setOnClickListener {
             var allGood = true
             try {
