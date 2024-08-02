@@ -89,8 +89,14 @@ class EditExpenseFragment : Fragment() {
             col[10].toInt()
         )
         Log.i("Date:", "Date: ${col[1]} --- ${model.date}")
-        editTextExpenseDay.setText(model.date.split(" ")[0]);
-        editTextExpenseTime.setText(model.date.split(" ")[1])
+        try {
+            editTextExpenseDay.setText(model.date.split(" ")[0])
+            editTextExpenseTime.setText(model.date.split(" ")[1])
+        }
+        catch (e: Exception)
+        {
+
+        }
         editTextExpenseRupee.setText(model.rupee.toString())
         editTextExpenseReason.setText(model.purpose)
         if (model.essential == EXPENSE_ESSENTIALS) {

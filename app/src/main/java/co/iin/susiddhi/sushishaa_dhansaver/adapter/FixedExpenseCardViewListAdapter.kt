@@ -70,7 +70,17 @@ class FixedExpenseCardViewListAdapter (private val context: Context, courseModel
             //holder?.ExpenseRupee?.setTextColor(Color.RED)
         }
         holder?.DateTime?.setText(model.enddate)
-        holder?.occurrence?.setText("${model.occurrence}:${model.sub_occurrence}")
+        var subText1 = model.sub_occurrence.split(":")[0]
+        var subText2 = model.sub_occurrence.split(":")[1]
+        if(subText1 == "DAY")
+        {
+            subText1 = "-"
+        }
+        if(subText2 == "MONTH")
+        {
+            subText2 = "-"
+        }
+        holder?.occurrence?.setText("${model.occurrence}:${subText1}:${subText2}")
         holder?.Category?.setText(model.category)
         holder?.SubCategory?.setText(model.sub_category)
         holder?.Reason?.setText(model.comments)

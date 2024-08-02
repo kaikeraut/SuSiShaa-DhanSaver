@@ -1,5 +1,6 @@
 package co.iin.susiddhi.sushishaa_dhansaver.setting.ui
 
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
@@ -94,13 +95,13 @@ class AddFixedExpenseFragment : Fragment() {
         var dayList:ArrayList<String> = ArrayList()
         var monList:ArrayList<String> = ArrayList()
         var weekDayList:ArrayList<String> = ArrayList()
-        weekDayList.add("MON")
-        weekDayList.add("TUE")
-        weekDayList.add("WED")
-        weekDayList.add("THU")
-        weekDayList.add("FRI")
-        weekDayList.add("SAT")
-        weekDayList.add("SUN")
+        weekDayList.add("MONDAY")
+        weekDayList.add("TUESDAY")
+        weekDayList.add("WEDNESDAY")
+        weekDayList.add("THURSDAY")
+        weekDayList.add("FRIDAY")
+        weekDayList.add("SATURDAY")
+        weekDayList.add("SUNDAY")
         dayList.add("DAY")
         for (index in 1..31){
             dayList.add(index.toString())
@@ -171,6 +172,8 @@ class AddFixedExpenseFragment : Fragment() {
                 else {
                     finalDayListSelected = dayList[position]
                 }
+                context?.getColor(R.color.white)
+                    ?.let { it1 -> spinnerFixedDay.setBackgroundColor(it1) }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -183,6 +186,8 @@ class AddFixedExpenseFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View, position: Int, id: Long) {
                 finalMonListSelected = monList[position]
+                context?.getColor(R.color.white)
+                    ?.let { it1 -> spinnerFixedMonth.setBackgroundColor(it1) }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -294,6 +299,10 @@ class AddFixedExpenseFragment : Fragment() {
                 if(finalDayListSelected == "DAY" || finalMonListSelected == "MONTH")
                 {
                     allGood = false
+                    context?.getColor(R.color.debitColorText)
+                        ?.let { it1 -> spinnerFixedDay.setBackgroundColor(it1) }
+                    context?.getColor(R.color.debitColorText)
+                        ?.let { it1 -> spinnerFixedMonth.setBackgroundColor(it1) }
                 }
             }
             else if(occurrenceSelected == CONST_OCCURRENCE_MONTHLY)
@@ -329,8 +338,11 @@ class AddFixedExpenseFragment : Fragment() {
                     Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show()
                 }
             }//all good
+            else{
 
-        }//addbuttonFixed income
+            }
+
+        }//Add Button Fixed income
     }
 
     companion object {

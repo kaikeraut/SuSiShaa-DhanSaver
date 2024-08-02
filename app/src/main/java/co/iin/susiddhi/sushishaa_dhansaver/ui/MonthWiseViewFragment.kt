@@ -1,5 +1,6 @@
 package co.iin.susiddhi.susishaa_dhansaver.ui
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Typeface
 import android.icu.text.SimpleDateFormat
@@ -10,10 +11,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.iin.susiddhi.susishaa_dhansaver.R
 import co.iin.susiddhi.susishaa_dhansaver.database.DataBaseHandler
 import co.iin.susiddhi.susishaa_dhansaver.database.ExpenseChartCalulatedData
+import co.iin.susiddhi.susishaa_dhansaver.database.ExpenseClassModel
 import co.iin.susiddhi.susishaa_dhansaver.database.FILTER_MONTHWISE
 import java.time.LocalDate
 import java.time.Year
@@ -180,7 +183,163 @@ class MonthWiseViewFragment : Fragment() {
         populateDatesInCalenderView(textViewCalList, month_number+1, year)
     }//onViewCreated
 
+    private fun checkAndUpdateFixedExpensedForCurrentMonth(monthNumber: Int, year: Int) {
+        Log.w("FixedExpense", "FixedExpense $monthNumber, $year")
+        var anyUpdate = false
+        val sp: SharedPreferences? = context?.getSharedPreferences(
+            "SUSISHAA_DHANSAVER",
+            AppCompatActivity.MODE_PRIVATE
+        );
+        var db = context?.let { DataBaseHandler(it) }
+        var fixedList = db?.readFixedExpenseData()
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        var currentDateTime = sdf.format(Date())
+        var todayDate = currentDateTime.split(" ")[0]
+        if (fixedList != null) {
+            for (fixed in fixedList) {
+                var sharedKey = "FIXED_EXPENSE:${monthNumber}:${year}:${fixed.id}"
+                Log.w("SharedKey", "sharedKey: $sharedKey")
+
+                if (sp?.getString(sharedKey, null) == "yes")
+                {
+                    Log.w("SharedKey", "sharedKey: $sharedKey Already Added Skipping")
+                    continue
+                }
+                val ed = sp?.edit()
+                ed?.putString(sharedKey, "yes")
+                ed?.commit()
+                Log.w(
+                    "$sharedKey",
+                    "fixed.occurrence: ${fixed.occurrence}  ---- ${fixed.sub_occurrence}"
+                )
+                var updateToDb = false
+                if (fixed.occurrence == "YEARLY") {
+                    var dd = fixed.sub_occurrence.split(":")[0].toInt()
+                    var mm = fixed.sub_occurrence.split(":")[1].toInt()
+                    if (mm == monthNumber) {
+                        updateToDb = true
+                        todayDate = "$dd/$mm/$year"
+                    }
+                } else if (fixed.occurrence == "MONTHLY") {
+                    var dd = fixed.sub_occurrence.split(":")[0].toInt()
+                    //var mm = fixed.sub_occurrence.split(":")[1].toInt()
+                    updateToDb = true
+                    todayDate = "$dd/$monthNumber/$year"
+
+                } else if (fixed.occurrence == "DAILY") {
+                    //var mm = fixed.sub_occurrence.split(":")[1].toInt()
+                    updateToDb = false
+                    var totalLoop = getMonthDays(monthNumber, year)
+                    for(daily in 1..totalLoop) {
+                        todayDate = "$daily/$monthNumber/$year"
+                        var result = db?.insertExpenseData(
+                            ExpenseClassModel(
+                                0,
+                                "$todayDate 10:00",
+                                fixed.expense,
+                                "AUTO_DEBIT",
+                                fixed.category,
+                                fixed.sub_category,
+                                "Fixed Auto Debit",
+                                "Vineet",
+                                monthNumber,
+                                year,
+                                1
+                            )
+                        )
+                        Log.w("Update", "result: $result")
+                        anyUpdate = true
+                    }
+
+                } else if (fixed.occurrence == "WEEKLY") {
+                    var dd = fixed.sub_occurrence.split(":")[0]
+                    //var mm = fixed.sub_occurrence.split(":")[1].toInt()
+                    var totalLoop = getMonthDays(monthNumber, year)
+                    var weekDay = getMonthStartOfWeek(monthNumber, year)
+                    val weeksList = listOf<String>("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+
+                    val startIndex = weeksList.indexOf(weekDay)
+                    val startIndexFixed = weeksList.indexOf(dd)
+                    var localCounter = startIndex
+                    Log.w("asdf", "startIndex:$startIndex, startIndexFixed:$startIndexFixed")
+                    for(daily in 1..totalLoop) {
+                        if(localCounter >= 7)
+                        {
+                            localCounter = 0
+                        }
+                        Log.w("asdf", "daily:$daily localCounter:$localCounter, startIndexFixed:$startIndexFixed")
+                        if(startIndexFixed == localCounter)
+                        {
+                            todayDate = "$daily/$monthNumber/$year"
+                            var result = db?.insertExpenseData(
+                                ExpenseClassModel(
+                                    0,
+                                    "$todayDate 10:00",
+                                    fixed.expense,
+                                    "AUTO_DEBIT",
+                                    fixed.category,
+                                    fixed.sub_category,
+                                    "Fixed Auto Debit",
+                                    "Vineet",
+                                    monthNumber,
+                                    year,
+                                    1
+                                )
+                            )
+                            Log.w("Update", "result: $result")
+                            anyUpdate = true
+                        }
+                        localCounter++
+                    }
+                    if (dd == "SUN" && weekDay == weeksList[6]) {
+
+                    } else if (dd == "MON" && weekDay == weeksList[0]) {
+
+                    } else if (dd == "TUE" && weekDay == weeksList[1]) {
+
+                    } else if (dd == "WED" && weekDay == weeksList[2]) {
+
+                    } else if (dd == "THU" && weekDay == weeksList[3]) {
+
+                    } else if (dd == "FRI" && weekDay == weeksList[4]) {
+
+                    } else if (dd == "SAT" && weekDay == weeksList[5]) {
+
+                    }
+                    updateToDb = false
+                }
+                Log.w(
+                    "",
+                    "updateToDb: $updateToDb, todayDate:$todayDate, fixed.expense:${fixed.expense} monthNumber:$monthNumber year:$year"
+                )
+                if (updateToDb) {
+                    var result = db?.insertExpenseData(
+                        ExpenseClassModel(
+                            0,
+                            "$todayDate 10:00",
+                            fixed.expense,
+                            "AUTO_DEBIT",
+                            fixed.category,
+                            fixed.sub_category,
+                            "Fixed Auto Debit",
+                            "Vineet",
+                            monthNumber,
+                            year,
+                            1
+                        )
+                    )
+                    Log.w("Update", "result: $result")
+                    anyUpdate = true
+                }
+            }
+            if(anyUpdate) {
+                Toast.makeText(context, "Fixed Expenses Updated", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     private fun populateDatesInCalenderView(textViewCalList: ArrayList<TextView>, monthNumber: Int, year: Int) {
+        checkAndUpdateFixedExpensedForCurrentMonth(monthNumber, year)
         var daysInMonth = getMonthDays(monthNumber, year)
         var daysInPrevMonth = getMonthDays(monthNumber-1, year)
         var weekDay = getMonthStartOfWeek(monthNumber, year)
@@ -193,7 +352,7 @@ class MonthWiseViewFragment : Fragment() {
         val calcData: ExpenseChartCalulatedData? = db?.calculateDateForPieChart(FILTER_MONTHWISE, monthNumber, year)
 
         var date = 1
-        daysInPrevMonth = daysInPrevMonth - startIndex
+        daysInPrevMonth -= startIndex
         var loopCounter = 0
         var actualDayCounter = 0
         var endLeftDays = 0
