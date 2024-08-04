@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.replace
 import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.AddFixedExpenseFragment
 import co.iin.susiddhi.sushishaa_dhansaver.setting.ui.ViewFixedExpenseFragment
 import co.iin.susiddhi.susishaa_dhansaver.MainActivity
@@ -74,8 +75,18 @@ class SettingsFragment : Fragment() {
         textViewCategory.setOnClickListener { replaceFragment(AddCategoryFragment()) }
         textViewSubCategory.setOnClickListener { replaceFragment(AddSubCategoryFragment()) }
         //textViewExport.setOnClickListener { replaceFragment(ExportFragment()) }
-        textViewImport.setOnClickListener { replaceFragment(ImportFragment()) }
-        textViewBackup.setOnClickListener { replaceFragment(BackupFragment()) }
+        textViewImport.setOnClickListener {
+            activity?.run {
+                supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerViewSetting, ImportFragment())
+                    .commit()
+            }
+        }
+        textViewBackup.setOnClickListener {
+            activity?.run {
+                supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerViewSetting, BackupFragment())
+                    .commit()
+            }
+        }
         textViewAboutUs.setOnClickListener { replaceFragment(AboutUsFragment()) }
         textViewAddFixedExpense.setOnClickListener{ replaceFragment(AddFixedExpenseFragment()) }
         textViewViewFixedExpense.setOnClickListener{ replaceFragment(ViewFixedExpenseFragment()) }

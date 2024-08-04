@@ -238,7 +238,7 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
 
     fun insertImportedExpenseData(expense: ExpenseClassModel): Int {
         var ret = updateExpenseData(expense)
-        Log.e("insertImportedExpenseData", "UPDATE REt: $ret")
+        //Log.e("insertImportedExpenseData", "UPDATE REt: $ret")
         if(ret == 0)
         {
             var ret = insertExpenseData(expense)
@@ -247,6 +247,16 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
         return ret
     }
 
+    fun insertImportedFixedExpenseData(fixed: FixedExpenseClassModel): Int {
+        var ret = updateFixedExpense(fixed)
+        //Log.e("insertImportedFixedExpenseData", "UPDATE REt: $ret")
+        if(ret == 0)
+        {
+            var ret = insertNewFixedExpense(fixed)
+            Log.e("insertImportedFixedExpenseData", "INSERT REt: $ret")
+        }
+        return ret
+    }
     fun readExpenseData(filterBy: Int, filterValue: Int, filterSubValue: Int): MutableList<ExpenseClassModel> {
         val expenseList: MutableList<ExpenseClassModel> = ArrayList()
         val db = this.readableDatabase
@@ -334,9 +344,9 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
             e.printStackTrace()
         }
         val db = this.readableDatabase
-        val query = "Select * from $SUSISHAA_TABLENAME_EXPENSE"
+        var query = "Select * from $SUSISHAA_TABLENAME_EXPENSE"
         Log.i("READ_DB", "READ Query:$query")
-        val result = db.rawQuery(query, null)
+        var result = db.rawQuery(query, null)
         if (result.moveToFirst()) {
             do {
                 var id = result.getInt(result.getColumnIndexOrThrow(COL_ID))
@@ -350,10 +360,30 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
                 val month = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_MONTH))
                 val year = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_YEAR))
                 val essential = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_EXPENSE_COL_NAME_ESSENTIAL))
-                val singleExpense = ExpenseClassModel(id, date, rupee, mode, category, subCategory,purpose, user, month, year, essential)
+                //val singleExpense = ExpenseClassModel(id, date, rupee, mode, category, subCategory,purpose, user, month, year, essential)
 
-                fs.write("$id~$date~$rupee~$mode~$category~$subCategory~$purpose~$user~$month~$year~$essential\n".toByteArray())
+                fs.write("DATA~$id~$date~$rupee~$mode~$category~$subCategory~$purpose~$user~$month~$year~$essential\n".toByteArray())
                 Log.i("DB_READ", "$id, $date, $rupee, $mode, $purpose, $category, $subCategory, $user, $month, $year $essential")
+            }
+            while (result.moveToNext())
+        }
+        //Add Fixed Expenses
+        query = "Select * from $SUSISHAA_TABLENAME_FIXED_EXPENSE"
+        Log.i("READ_DB", "READ Query:$query")
+        result = db.rawQuery(query, null)
+        if (result.moveToFirst()) {
+            do {
+                var id = result.getInt(result.getColumnIndexOrThrow(COL_ID))
+                val fixedExpenseRupee = result.getInt(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_EXPENSE))
+                val occurrence = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_OCCURRENCE))
+                val sub_occurrence = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUB_OCCURRENCE))
+                val category = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_CATEGORY))
+                val sub_category = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_SUBCATEGORY))
+                val end_date = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_END_DATE))
+                val comments = result.getString(result.getColumnIndexOrThrow(SUSISHAA_TABLENAME_FIXED_COL_NAME_COMMENTS))
+                //val fixedExpense = FixedExpenseClassModel(id, fixedExpenseRupee, occurrence, sub_occurrence, category, sub_category, end_date, comments)
+                fs.write("FIXED-DATA~$id~$fixedExpenseRupee~$occurrence~$sub_occurrence~$category~$sub_category~$end_date~$comments\n".toByteArray())
+                Log.i("DB_READ", "FIXED-DATA~$id~$fixedExpenseRupee~$occurrence~$sub_occurrence~$category~$sub_category~$end_date~$comments")
             }
             while (result.moveToNext())
         }
@@ -497,8 +527,10 @@ class DataBaseHandler(var context: Context) : SQLiteOpenHelper(context, SUSISHAA
 
         //contentValues.put(SUSISHAA_COL_NAME_CATEGORY, fixed.ex)
         // Updating Row
-        Log.i("UPDATE-FIXED", "Fixed: rupee:${fixed.expense}~${fixed.occurrence}~${fixed.sub_occurrence}~${fixed.category}" +
+        /*Log.i("UPDATE-FIXED", "Fixed: rupee:${fixed.expense}~${fixed.occurrence}~${fixed.sub_occurrence}~${fixed.category}" +
                 "~${fixed.sub_category}~${fixed.enddate}~${fixed.comments}~")
+                */
+
         val success = database.update(
             SUSISHAA_TABLENAME_FIXED_EXPENSE, contentValues,
             "$COL_ID='${fixed.id}'",null)
